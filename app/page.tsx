@@ -55,6 +55,17 @@ const projectLinks = [
     note: "動画からボールの軌道・高さ・リズム・左右差を可視化する、ジャグリング解析アプリ。",
     href: "https://juggling-trajectory-analyzer-54347579590.asia-northeast1.run.app/",
     action: "解析アプリを開く ↗",
+    external: true,
+  },
+  {
+    className: "project-audio",
+    index: "P-02",
+    category: "MACOS / AUDIO ANALYSIS",
+    title: "System Audio Analyzer",
+    note: "Macで再生中の音を、スペクトラム・ラウドネス・ステレオ像としてリアルタイム解析するベータアプリ。",
+    href: "/system-audio-analyzer",
+    action: "アプリの詳細を見る →",
+    external: false,
   },
   {
     className: "project-koubo",
@@ -64,6 +75,7 @@ const projectLinks = [
     note: "身体芸術の公募を、条件や締切から探す。",
     href: "https://koubo.art-monosashi.com/",
     action: "公募を探す ↗",
+    external: true,
   },
   {
     className: "project-grants",
@@ -73,6 +85,7 @@ const projectLinks = [
     note: "舞台・身体芸術の助成制度を、地域や条件から比べる。",
     href: "https://joseikin.art-monosashi.com/",
     action: "助成を探す ↗",
+    external: true,
   },
   {
     className: "project-photo",
@@ -82,6 +95,7 @@ const projectLinks = [
     note: "写真と応募条件から、コンテスト候補を照合する。",
     href: "https://photo-contest-monosashi.juggler-arata.chatgpt.site/",
     action: "候補を比べる ↗",
+    external: true,
   },
   {
     className: "project-venue",
@@ -91,6 +105,7 @@ const projectLinks = [
     note: "イベント会場を、規模・天井高・予算・搬入・アクセスで比べる。",
     href: "https://venue.art-monosashi.com/",
     action: "会場を探す ↗",
+    external: true,
   },
 ] as const;
 
@@ -175,21 +190,25 @@ export default function Home() {
 
       <section className="projects" id="projects" aria-labelledby="projects-title">
         <div className="projects-heading">
-          <p>LIVE PROJECTS / 01—05</p>
+          <p>LIVE PROJECTS / 01—06</p>
           <h2 id="projects-title">
             つくったものを、
             <br />
             ここから試せます。
           </h2>
           <p>
-            ジャグリング解析アプリと、条件や根拠を比べる「ものさし」シリーズ。
+            身体と音を解析するツール、条件や根拠を比べる「ものさし」シリーズ。
           </p>
         </div>
 
         <div className="project-grid">
           {projectLinks.map((project) => (
             <article className={`project-card ${project.className}`} key={project.index}>
-              <a href={project.href} target="_blank" rel="noreferrer">
+              <a
+                href={project.href}
+                target={project.external ? "_blank" : undefined}
+                rel={project.external ? "noreferrer" : undefined}
+              >
                 <div className="project-card-top">
                   <span>{project.index}</span>
                   <span>{project.category}</span>

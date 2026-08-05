@@ -39,6 +39,8 @@ test("server-renders the PYGMIX home draft", async () => {
   assert.match(html, /身体技法/);
   assert.match(html, /PYGMIX GAMES/);
   assert.match(html, /JuggleLine/);
+  assert.match(html, /System Audio Analyzer/);
+  assert.match(html, /href="\/system-audio-analyzer"/);
   assert.match(html, /公募ものさし/);
   assert.match(html, /助成ものさし/);
   assert.match(html, /写真コンテストものさし/);
@@ -51,6 +53,36 @@ test("server-renders the PYGMIX home draft", async () => {
   assert.match(html, /Public Domain/);
   assert.match(html, /circusarata@gmail\.com/);
   assert.doesNotMatch(html, /codex-preview|Your site is taking shape/);
+});
+
+test("server-renders the System Audio Analyzer detail page", async () => {
+  const workerUrl = new URL("../dist/server/index.js", import.meta.url);
+  workerUrl.searchParams.set("audio-test", `${process.pid}-${Date.now()}`);
+  const { default: worker } = await import(workerUrl.href);
+
+  const response = await worker.fetch(
+    new Request("http://localhost/system-audio-analyzer", {
+      headers: { accept: "text/html" },
+    }),
+    {
+      ASSETS: {
+        fetch: async () => new Response("Not found", { status: 404 }),
+      },
+    },
+    {
+      waitUntil() {},
+      passThroughOnException() {},
+    },
+  );
+
+  assert.equal(response.status, 200);
+  const html = await response.text();
+  assert.match(html, /System Audio Analyzer/);
+  assert.match(html, /Apple Silicon/);
+  assert.match(html, /macOS 14\.2/);
+  assert.match(html, /Build 28/i);
+  assert.match(html, /Developer ID公証前/);
+  assert.match(html, /circusarata@gmail\.com/);
 });
 
 test("removes the disposable starter preview", async () => {
