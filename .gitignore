@@ -40,3 +40,7 @@ next-env.d.ts
 /.wrangler/
 /outputs/
 /work/
+
+# AI生成のポーズ素材は採用前の候補（正本はpygmix/PYGMIX/のIllustrator原画）
+# 採用したものは使用先へコピーして個別管理する
+/assets/pygmy-ojisan/generated-samples/
