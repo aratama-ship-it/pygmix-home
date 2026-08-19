@@ -1,113 +1,140 @@
 "use client";
 
-/* eslint-disable @next/next/no-img-element -- These local assets are pre-sized for static edge hosting. */
+/* eslint-disable @next/next/no-img-element -- Plate faces are local, pre-sized for static edge hosting. */
 
 import { useState, type CSSProperties } from "react";
 
-const orbitItems = [
+type OrbitItem = {
+  id: string;
+  className: string;
+  /** カード面：公開中のOGカードを読む場合のみ */
+  src?: string;
+  alt?: string;
+  /** カード面：OGカードが無いプロジェクトはアプリアイコン＋名前で見せる */
+  icon?: string;
+  /** カード面：アイコンも無い場合は名前だけ */
+  label?: string;
+  category: string;
+  mix: string;
+  credit: string;
+  href: string;
+  external: boolean;
+  delay: string;
+};
+
+/* 皿はLIVE PROJECTSの8件＋YouTubeの入門動画。52秒で1周するので約5.78秒ずつずらす。
+   面の画像は各配信元から取り込んで640px/192pxに縮小した同梱コピー。皿は全部が初回表示に
+   出るため遅延読み込みが効かず、配信元の原寸（合計6.36MB）を直接読むと初回表示が重くなる。 */
+const orbitItems: readonly OrbitItem[] = [
   {
-    id: "circus",
-    className: "orbit-circus",
-    src: "/visuals/circus-chiarini.jpg",
-    alt: "明治期のサーカス興行を描いた世界第一チャリネ大曲馬之図",
-    category: "CIRCUS / HISTORY",
-    mix: "BODY × SPECTACLE",
-    credit: "出典：国立国会図書館『NDLイメージバンク』",
+    id: "howto",
+    className: "orbit-howto",
+    src: "/visuals/thumb-juggling-howto.jpg",
+    alt: "ジャグリングの持ち方から投げ方までを解説するPYGMIX studioの入門動画",
+    category: "JUGGLING / VIDEO",
+    mix: "TEACH × MOTION",
+    credit: "PYGMIX STUDIO / YOUTUBE",
+    href: "https://www.youtube.com/watch?v=tBXMkUGqYBQ",
+    external: true,
     delay: "0s",
   },
   {
-    id: "games",
-    className: "orbit-games",
-    src: "/visuals/game-kasane.jpg",
-    alt: "PYGMIXで制作した、木の駒を重ねて遊ぶゲーム",
-    category: "GAMES / WEB",
-    mix: "PLAY × LOGIC",
-    credit: "PYGMIX ORIGINAL",
-    href: "https://kasane-maru-batsu.juggler-arata.workers.dev/",
-    delay: "-5.2s",
+    id: "juggleline",
+    className: "orbit-juggleline",
+    icon: "/visuals/icon-juggleline.png",
+    label: "JuggleLine",
+    category: "JUGGLING / ANALYSIS",
+    mix: "VIDEO → TRAJECTORY",
+    credit: "BETA",
+    href: "https://juggling-trajectory-analyzer-54347579590.asia-northeast1.run.app/",
+    external: true,
+    delay: "-5.78s",
   },
   {
-    id: "learning",
-    className: "orbit-learning",
-    src: "/visuals/diabolo-learning.jpg",
-    alt: "ディアボロの軌道をカードの連続として描いた学習用ビジュアル",
-    category: "LEARNING / TOOLS",
-    mix: "FEELING → STRUCTURE",
-    credit: "PYGMIX ORIGINAL",
-    delay: "-10.4s",
+    id: "koubo",
+    className: "orbit-koubo",
+    src: "/visuals/og-koubo.jpg",
+    alt: "公募ものさしのカード",
+    category: "OPEN CALLS",
+    mix: "公募 × 条件",
+    credit: "koubo.art-monosashi.com",
+    href: "https://koubo.art-monosashi.com/",
+    external: true,
+    delay: "-11.56s",
   },
   {
-    id: "yokohama",
-    className: "orbit-yokohama",
-    src: "/visuals/circus-yokohama.jpg",
-    alt: "横浜に来た外国曲馬の多様な身体芸を描いた錦絵",
-    category: "PERFORMANCE / HISTORY",
-    mix: "JAPAN × WORLD",
-    credit: "出典：国立国会図書館『NDLイメージバンク』",
-    delay: "-15.6s",
+    id: "audio",
+    className: "orbit-audio",
+    icon: "/visuals/icon-system-audio-analyzer.png",
+    label: "System Audio\nAnalyzer",
+    category: "MACOS / AUDIO",
+    mix: "SOUND → STRUCTURE",
+    credit: "BETA / BUILD 28",
+    href: "/system-audio-analyzer",
+    external: false,
+    delay: "-17.33s",
   },
   {
-    id: "juggling",
-    className: "orbit-juggling",
-    src: "/visuals/juggler-1934.jpg",
-    alt: "シルクハット姿でボールを操るジャグラーの版画",
-    category: "JUGGLING / ARCHIVE",
-    mix: "PAST × PRESENT",
-    credit: "SMITHSONIAN OPEN ACCESS / CC0",
-    delay: "-20.8s",
+    id: "joseikin",
+    className: "orbit-joseikin",
+    src: "/visuals/og-joseikin.jpg",
+    alt: "助成ものさしのカード",
+    category: "GRANTS",
+    mix: "助成 × 根拠",
+    credit: "joseikin.art-monosashi.com",
+    href: "https://joseikin.art-monosashi.com/",
+    external: true,
+    delay: "-23.11s",
   },
   {
-    id: "island",
-    className: "orbit-island",
-    src: "/visuals/game-island.jpg",
-    alt: "六角形の地形タイルを組み合わせて島を拓くボードゲーム",
-    category: "GAMES / SYSTEMS",
-    mix: "RULES × LANDSCAPE",
-    credit: "PYGMIX ORIGINAL",
-    href: "https://island-founders.juggler-arata.chatgpt.site/",
-    delay: "-26s",
+    id: "diabolo48",
+    className: "orbit-diabolo48",
+    icon: "/visuals/icon-diabolo48.png",
+    label: "４８ヶ月の\nディアボロ",
+    category: "DIABOLO / ARCHIVE",
+    mix: "48 MONTHS",
+    credit: "制作中",
+    href: "https://aratama-ship-it.github.io/diabolo4yeargame/",
+    external: true,
+    delay: "-28.89s",
   },
   {
-    id: "diabolo",
-    className: "orbit-diabolo",
-    src: "/visuals/diabolo-archive-1907.jpg",
-    alt: "1907年の風刺画に描かれたディアボロ",
-    category: "DIABOLO / RESEARCH",
-    mix: "ARCHIVE × BODY",
-    credit: "RIJKSMUSEUM / PUBLIC DOMAIN",
-    delay: "-31.2s",
+    id: "fridge",
+    className: "orbit-fridge",
+    icon: "/visuals/icon-fridge.png",
+    label: "冷蔵庫の\n現在地",
+    category: "KITCHEN / TOOL",
+    mix: "残りもの → 献立",
+    credit: "GITHUB PAGES",
+    href: "https://aratama-ship-it.github.io/fridge-leftovers/",
+    external: true,
+    delay: "-34.67s",
   },
   {
-    id: "soulier",
-    className: "orbit-soulier",
-    src: "/visuals/circus-soulier.jpg",
-    alt: "馬上芸と空中芸が同時に展開する仏蘭西大曲馬の錦絵",
-    category: "CIRCUS / ARCHIVE",
-    mix: "BODY × IMAGE",
-    credit: "出典：国立国会図書館『NDLイメージバンク』",
-    delay: "-36.4s",
+    id: "venue",
+    className: "orbit-venue",
+    src: "/visuals/og-venue.jpg",
+    alt: "会場ものさしのカード",
+    category: "VENUES",
+    mix: "会場 × 条件",
+    credit: "venue.art-monosashi.com",
+    href: "https://venue.art-monosashi.com/",
+    external: true,
+    delay: "-40.44s",
   },
   {
-    id: "costumes",
-    className: "orbit-costumes",
-    src: "/visuals/diabolo-1812.jpg",
-    alt: "1812年の服飾版画に描かれたディアボロを操る女性",
-    category: "DIABOLO / CULTURE",
-    mix: "TOY × FASHION",
-    credit: "WIKIMEDIA COMMONS / PUBLIC DOMAIN",
-    delay: "-41.6s",
+    id: "mesure",
+    className: "orbit-mesure",
+    src: "/visuals/og-mesure.jpg",
+    alt: "MESUREのカード",
+    category: "NORTH AMERICA",
+    mix: "CANADA + USA",
+    credit: "mesure.art-monosashi.com",
+    href: "https://mesure.art-monosashi.com/",
+    external: true,
+    delay: "-46.22s",
   },
-  {
-    id: "story",
-    className: "orbit-story",
-    src: "/visuals/diabolo-story-1915.jpg",
-    alt: "1915年の物語『デアボロの恨』が載る縦書きの書籍見開き",
-    category: "TEXT / RESEARCH",
-    mix: "WORDS × OBJECTS",
-    credit: "国立国会図書館デジタルコレクション / 保護期間満了",
-    delay: "-46.8s",
-  },
-] as const;
+];
 
 export default function OrbitHero() {
   const [paused, setPaused] = useState(false);
@@ -124,7 +151,7 @@ export default function OrbitHero() {
         CREATIVE STUDIO
       </p>
       <p className="orbit-corner orbit-corner-right">
-        TEN PLATES
+        NINE PLATES
         <br />
         ONE FOUNDATION
       </p>
@@ -150,12 +177,21 @@ export default function OrbitHero() {
 
       <div
         className="orbit-items"
-        aria-label="入口から出口へ流れるPYGMIXの10の活動"
+        aria-label="入口から出口へ流れるPYGMIXの9つのプロジェクト"
       >
         {orbitItems.map((item) => {
           const visual = (
             <>
-              <img src={item.src} alt={item.alt} />
+              {item.src ? (
+                <img src={item.src} alt={item.alt} />
+              ) : (
+                <span
+                  className={`orbit-plate${item.icon ? " orbit-plate-icon" : ""}`}
+                >
+                  {item.icon ? <img src={item.icon} alt="" /> : null}
+                  <span>{item.label}</span>
+                </span>
+              )}
               <span className="orbit-caption">
                 <span>
                   <b>{item.category}</b>
@@ -172,19 +208,15 @@ export default function OrbitHero() {
               key={item.id}
               style={{ "--orbit-delay": item.delay } as CSSProperties}
             >
-              {"href" in item ? (
-                <a
-                  className="orbit-card"
-                  href={item.href}
-                  target="_blank"
-                  rel="noreferrer"
-                  aria-label={`${item.category}を開く`}
-                >
-                  {visual}
-                </a>
-              ) : (
-                <figure className="orbit-card">{visual}</figure>
-              )}
+              <a
+                className="orbit-card"
+                href={item.href}
+                target={item.external ? "_blank" : undefined}
+                rel={item.external ? "noreferrer" : undefined}
+                aria-label={`${item.label ?? item.category}を開く`}
+              >
+                {visual}
+              </a>
             </div>
           );
         })}
@@ -204,13 +236,6 @@ export default function OrbitHero() {
           <a href="#activities">WORKS</a>
           <a href="#projects">PROJECTS</a>
           <a href="#principle">ABOUT</a>
-          <a
-            href="https://pygmix-games.juggler-arata.chatgpt.site/"
-            target="_blank"
-            rel="noreferrer"
-          >
-            GAMES ↗
-          </a>
           <a href="mailto:circusarata@gmail.com">CONTACT</a>
         </nav>
 

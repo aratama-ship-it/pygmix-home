@@ -7,7 +7,7 @@ export const metadata: Metadata = {
     template: "%s｜PYGMIX",
   },
   description:
-    "身体、構造、遊び、技術。異なる領域を掛け合わせてつくるPYGMIX studioのホームページです。",
+    "身体、構造、記録、技術。異なる領域を掛け合わせてつくるPYGMIX studioのホームページです。",
 };
 
 export default function RootLayout({

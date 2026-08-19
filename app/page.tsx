@@ -13,15 +13,6 @@ const activityCards = [
   },
   {
     number: "02",
-    className: "activity-games",
-    category: "GAMES / WEB",
-    mix: "遊び × ルール × 同期",
-    title: "考えることを、遊べる形にする。",
-    note: "盤上の思考から身体感覚まで、ひとりでも誰かとでも試せるゲームへ。",
-    href: "https://pygmix-games.juggler-arata.chatgpt.site/",
-  },
-  {
-    number: "03",
     className: "activity-research",
     category: "RESEARCH / ARCHIVE",
     mix: "歴史資料 × 身体芸術",
@@ -29,7 +20,7 @@ const activityCards = [
     note: "資料を集め、つなぎ直し、表現の背景に別の視点をつくる。",
   },
   {
-    number: "04",
+    number: "03",
     className: "activity-film",
     category: "FILM / DOCUMENT",
     mix: "動き × 記録 × 編集",
@@ -37,7 +28,7 @@ const activityCards = [
     note: "演技を並べるのではなく、活動の輪郭が見える映像を考える。",
   },
   {
-    number: "05",
+    number: "04",
     className: "activity-learning",
     category: "LEARNING / TOOLS",
     mix: "感覚 × 構造化 × 反復",
@@ -46,7 +37,20 @@ const activityCards = [
   },
 ] as const;
 
-const projectLinks = [
+type ProjectLink = {
+  className: string;
+  index: string;
+  category: string;
+  title: string;
+  note: string;
+  href: string;
+  action: string;
+  external: boolean;
+  /** 公開しているが未完成のものに付ける短いラベル */
+  status?: string;
+};
+
+const projectLinks: readonly ProjectLink[] = [
   {
     className: "project-juggleline",
     index: "P-01",
@@ -88,18 +92,8 @@ const projectLinks = [
     external: true,
   },
   {
-    className: "project-photo",
-    index: "M-03",
-    category: "PHOTO CONTESTS",
-    title: "写真コンテストものさし",
-    note: "写真と応募条件から、コンテスト候補を照合する。",
-    href: "https://photo-contest-monosashi.juggler-arata.chatgpt.site/",
-    action: "候補を比べる ↗",
-    external: true,
-  },
-  {
     className: "project-venue",
-    index: "M-04",
+    index: "M-03",
     category: "VENUES",
     title: "会場ものさし",
     note: "イベント会場を、規模・天井高・予算・搬入・アクセスで比べる。",
@@ -107,35 +101,51 @@ const projectLinks = [
     action: "会場を探す ↗",
     external: true,
   },
+  {
+    className: "project-mesure",
+    index: "M-04",
+    category: "NORTH AMERICA / FR—EN",
+    title: "MESURE",
+    note: "カナダとアメリカの公募・助成を、締切と条件からフランス語と英語で探す。「ものさし」の北米版。",
+    href: "https://mesure.art-monosashi.com/",
+    action: "Chercher / Search ↗",
+    external: true,
+  },
+  {
+    className: "project-diabolo48",
+    index: "A-01",
+    category: "DIABOLO / ARCHIVE",
+    title: "４８ヶ月のディアボロ",
+    note: "4年分の練習と変化を、月単位でたどるディアボロの記録。順次追加しています。",
+    href: "https://aratama-ship-it.github.io/diabolo4yeargame/",
+    action: "記録を見る ↗",
+    external: true,
+    status: "制作中",
+  },
+  {
+    className: "project-fridge",
+    index: "P-03",
+    category: "KITCHEN / TOOL",
+    title: "冷蔵庫の現在地",
+    note: "いま冷蔵庫にあるもの から、つくれる料理と使い切る順番を考える。",
+    href: "https://aratama-ship-it.github.io/fridge-leftovers/",
+    action: "残りものから探す ↗",
+    external: true,
+  },
 ] as const;
 
 function ActivityCard({ card }: { card: (typeof activityCards)[number] }) {
-  const inner = (
-    <>
-      <div className="activity-card-top">
-        <span>{card.number}</span>
-        <span>{card.category}</span>
-      </div>
-      <p className="activity-mix">{card.mix}</p>
-      <h3>{card.title}</h3>
-      <p className="activity-note">{card.note}</p>
-      {"href" in card ? (
-        <span className="activity-open" aria-hidden="true">
-          OPEN THE GAMES ↗
-        </span>
-      ) : null}
-    </>
-  );
-
   return (
     <article className={`activity-card ${card.className}`}>
-      {"href" in card ? (
-        <a href={card.href} target="_blank" rel="noreferrer">
-          {inner}
-        </a>
-      ) : (
-        <div className="activity-card-inner">{inner}</div>
-      )}
+      <div className="activity-card-inner">
+        <div className="activity-card-top">
+          <span>{card.number}</span>
+          <span>{card.category}</span>
+        </div>
+        <p className="activity-mix">{card.mix}</p>
+        <h3>{card.title}</h3>
+        <p className="activity-note">{card.note}</p>
+      </div>
     </article>
   );
 }
@@ -147,7 +157,7 @@ export default function Home() {
 
       <section className="activities" id="activities" aria-labelledby="activities-title">
         <div className="section-title">
-          <p>ACTIVITY INDEX / 01—05</p>
+          <p>ACTIVITY INDEX / 01—04</p>
           <h2 id="activities-title">
             ひとつじゃない。
             <br />
@@ -160,14 +170,6 @@ export default function Home() {
           {activityCards.map((card) => (
             <ActivityCard key={card.number} card={card} />
           ))}
-
-          <div className="activity-image activity-image-games">
-            <img
-              src="/visuals/game-kasane.jpg"
-              alt="PYGMIX GAMESの作品、かさねマルバツ"
-            />
-            <span>MORE THAN ONE WAY TO PLAY.</span>
-          </div>
 
           <figure className="activity-image activity-image-archive">
             <img
@@ -190,14 +192,14 @@ export default function Home() {
 
       <section className="projects" id="projects" aria-labelledby="projects-title">
         <div className="projects-heading">
-          <p>LIVE PROJECTS / 01—06</p>
+          <p>LIVE PROJECTS / 01—08</p>
           <h2 id="projects-title">
             つくったものを、
             <br />
             ここから試せます。
           </h2>
           <p>
-            身体と音を解析するツール、条件や根拠を比べる「ものさし」シリーズ。
+            身体と音を解析するツール、条件や根拠を比べる「ものさし」シリーズ、記録と生活の道具。
           </p>
         </div>
 
@@ -215,6 +217,9 @@ export default function Home() {
                 </div>
                 <div className="project-card-copy">
                   <h3>{project.title}</h3>
+                  {project.status ? (
+                    <span className="project-status">{project.status}</span>
+                  ) : null}
                   <p>{project.note}</p>
                 </div>
                 <span className="project-action">{project.action}</span>
@@ -226,17 +231,17 @@ export default function Home() {
 
       <section className="principle" id="principle" aria-labelledby="principle-title">
         <div className="principle-marquee" aria-hidden="true">
-          LOGIC <b>×</b> BODY <b>×</b> PLAY <b>×</b>
+          LOGIC <b>×</b> BODY <b>×</b> TOOLS <b>×</b>
         </div>
         <div className="principle-copy">
           <p>ONE FOUNDATION / MANY OUTPUTS</p>
           <h2 id="principle-title">理屈と身体のあいだに、創作のスイッチがある。</h2>
           <div>
             <p>
-              PYGMIXは、観察する、構造を見つける、実際に試す、遊べる形へ変える、という往復から活動をつくります。
+              PYGMIXは、観察する、構造を見つける、実際に試す、道具の形にする、という往復から活動をつくります。
             </p>
             <p>
-              舞台、ゲーム、映像、調査、学習ツール。見た目の違う成果が、同じ考え方から枝分かれしていきます。
+              舞台、映像、調査、記録、学習ツール。見た目の違う成果が、同じ考え方から枝分かれしていきます。
             </p>
           </div>
         </div>
