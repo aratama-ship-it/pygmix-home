@@ -1004,7 +1004,7 @@ a.collage-card:focus-visible {
 
 .center-menu {
   position: absolute;
-  top: 50%;
+  top: calc(50% - 12px);
   left: 50%;
   z-index: 12;
   display: flex;
