@@ -35,8 +35,7 @@ test("server-renders the PYGMIX home draft", async () => {
   assert.match(html, />入口</);
   assert.match(html, />出口</);
   assert.equal([...html.matchAll(/class="orbit-item /g)].length, 9);
-  assert.match(html, /ACTIVITY INDEX/);
-  assert.match(html, /身体技法/);
+  assert.doesNotMatch(html, /ACTIVITY INDEX|ひとつじゃない。|でも、ばらばらでもない。/);
   assert.match(html, /JuggleLine/);
   assert.match(html, /System Audio Analyzer/);
   assert.match(html, /href="\/system-audio-analyzer"/);
@@ -52,7 +51,6 @@ test("server-renders the PYGMIX home draft", async () => {
   assert.match(html, /４８ヶ月のディアボロ/);
   assert.match(html, /制作中/);
   assert.match(html, /冷蔵庫の現在地/);
-  assert.match(html, /ACTIVITY INDEX \/ 01—04/);
   assert.match(html, /\/visuals\/thumb-juggling-howto\.jpg/);
   // 皿の面はすべて同梱コピー。外部から画像を読み直すと初回表示が重くなる
   assert.doesNotMatch(html, /i\.ytimg\.com|art-monosashi\.com\/(assets\/)?og|github\.io\/[a-z0-9-]+\/assets\//);
@@ -60,8 +58,7 @@ test("server-renders the PYGMIX home draft", async () => {
   assert.doesNotMatch(html, /pygmix-games|kasane-maru-batsu|island-founders/);
   assert.doesNotMatch(html, /chatgpt\.site/);
   assert.doesNotMatch(html, /GAMES|ゲーム|盤上|遊び|遊べ/);
-  assert.match(html, /Public Domain/);
-  assert.match(html, /circusarata@gmail\.com/);
+  assert.doesNotMatch(html, /circusarata@gmail\.com ↗|class="footer-mail"/);
   assert.doesNotMatch(html, /codex-preview|Your site is taking shape/);
 });
 

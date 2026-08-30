@@ -1,41 +1,4 @@
-/* eslint-disable @next/next/no-img-element -- These local assets are pre-sized for static edge hosting. */
-
 import OrbitHero from "./OrbitHero";
-
-const activityCards = [
-  {
-    number: "01",
-    className: "activity-performance",
-    category: "PERFORMANCE / BODY",
-    mix: "身体技法 × 観察",
-    title: "動きの中にある構造を、見つける。",
-    note: "舞台で培った感覚を、軌道・タイミング・関係として捉え直す。",
-  },
-  {
-    number: "02",
-    className: "activity-research",
-    category: "RESEARCH / ARCHIVE",
-    mix: "歴史資料 × 身体芸術",
-    title: "過去の断片から、現在の身体を見る。",
-    note: "資料を集め、つなぎ直し、表現の背景に別の視点をつくる。",
-  },
-  {
-    number: "03",
-    className: "activity-film",
-    category: "FILM / DOCUMENT",
-    mix: "動き × 記録 × 編集",
-    title: "時間の中の出来事を、もう一度組み立てる。",
-    note: "演技を並べるのではなく、活動の輪郭が見える映像を考える。",
-  },
-  {
-    number: "04",
-    className: "activity-learning",
-    category: "LEARNING / TOOLS",
-    mix: "感覚 × 構造化 × 反復",
-    title: "わかるまでの過程も、道具にする。",
-    note: "複雑な技術や判断を、小さく試しながら身につけられる体験へ。",
-  },
-] as const;
 
 type ProjectLink = {
   className: string;
@@ -134,61 +97,10 @@ const projectLinks: readonly ProjectLink[] = [
   },
 ] as const;
 
-function ActivityCard({ card }: { card: (typeof activityCards)[number] }) {
-  return (
-    <article className={`activity-card ${card.className}`}>
-      <div className="activity-card-inner">
-        <div className="activity-card-top">
-          <span>{card.number}</span>
-          <span>{card.category}</span>
-        </div>
-        <p className="activity-mix">{card.mix}</p>
-        <h3>{card.title}</h3>
-        <p className="activity-note">{card.note}</p>
-      </div>
-    </article>
-  );
-}
-
 export default function Home() {
   return (
     <main id="top">
       <OrbitHero />
-
-      <section className="activities" id="activities" aria-labelledby="activities-title">
-        <div className="section-title">
-          <p>ACTIVITY INDEX / 01—04</p>
-          <h2 id="activities-title">
-            ひとつじゃない。
-            <br />
-            でも、ばらばらでもない。
-          </h2>
-          <span>同じ基盤から、出口はいろいろ。</span>
-        </div>
-
-        <div className="activity-board">
-          {activityCards.map((card) => (
-            <ActivityCard key={card.number} card={card} />
-          ))}
-
-          <figure className="activity-image activity-image-archive">
-            <img
-              src="/visuals/diabolo-archive-1907.jpg"
-              alt="1907年のディアボロ資料"
-            />
-            <figcaption>
-              Albert Hahn, <i>Kiesrecht-Diabolo</i>, 1907 / Rijksmuseum,
-              Public Domain
-            </figcaption>
-          </figure>
-
-          <div className="activity-symbol" aria-hidden="true">
-            <span>?</span>
-            <b>×</b>
-            <i>!</i>
-          </div>
-        </div>
-      </section>
 
       <section className="projects" id="projects" aria-labelledby="projects-title">
         <div className="projects-heading">
@@ -252,9 +164,6 @@ export default function Home() {
           PYGMI<span>X</span>
         </a>
         <p>真面目にふざける。</p>
-        <a className="footer-mail" href="mailto:circusarata@gmail.com">
-          circusarata@gmail.com ↗
-        </a>
       </footer>
     </main>
   );

@@ -2140,15 +2140,6 @@ footer p {
   letter-spacing: 0.07em;
 }
 
-.footer-mail {
-  justify-self: end;
-  padding-bottom: 6px;
-  border-bottom: 1px solid var(--red);
-  font-family: var(--mono);
-  font-size: 9px;
-  font-weight: 500;
-}
-
 @keyframes ticker-slide {
   to {
     transform: translateX(-50%);
@@ -2612,10 +2603,6 @@ footer p {
     justify-content: flex-end;
   }
 
-  .footer-mail {
-    align-self: stretch;
-    text-align: right;
-  }
 }
 
 @media (max-width: 900px) {
