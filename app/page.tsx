@@ -105,11 +105,7 @@ export default function Home() {
       <section className="projects" id="projects" aria-labelledby="projects-title">
         <div className="projects-heading">
           <p>LIVE PROJECTS / 01—08</p>
-          <h2 id="projects-title">
-            つくったものを、
-            <br />
-            ここから試せます。
-          </h2>
+          <h2 id="projects-title">ライブラリ</h2>
           <p>
             身体と音を解析するツール、条件や根拠を比べる「ものさし」シリーズ、記録と生活の道具。
           </p>
