@@ -236,7 +236,7 @@ export default function OrbitHero() {
           <a href="#activities">WORKS</a>
           <a href="#projects">PROJECTS</a>
           <a href="#principle">ABOUT</a>
-          <a href="mailto:circusarata@gmail.com">CONTACT</a>
+          <a href="/contact">CONTACT</a>
         </nav>
 
         <button

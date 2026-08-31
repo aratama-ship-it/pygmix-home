@@ -2,13 +2,13 @@ import assert from "node:assert/strict";
 import { access, readFile } from "node:fs/promises";
 import test from "node:test";
 
-async function render() {
+async function render(pathname = "/") {
   const workerUrl = new URL("../dist/server/index.js", import.meta.url);
   workerUrl.searchParams.set("test", `${process.pid}-${Date.now()}`);
   const { default: worker } = await import(workerUrl.href);
 
   return worker.fetch(
-    new Request("http://localhost/", {
+    new Request(`http://localhost${pathname}`, {
       headers: { accept: "text/html" },
     }),
     {
@@ -48,6 +48,8 @@ test("server-renders the PYGMIX home draft", async () => {
   assert.match(html, /venue\.art-monosashi\.com/);
   assert.match(html, /MESURE/);
   assert.match(html, /mesure\.art-monosashi\.com/);
+  assert.match(html, /href="\/contact">CONTACT</);
+  assert.doesNotMatch(html, /href="mailto:circusarata@gmail\.com">CONTACT</);
   assert.match(html, /４８ヶ月のディアボロ/);
   assert.match(html, /制作中/);
   assert.match(html, /冷蔵庫の現在地/);
@@ -60,6 +62,20 @@ test("server-renders the PYGMIX home draft", async () => {
   assert.doesNotMatch(html, /GAMES|ゲーム|盤上|遊び|遊べ/);
   assert.doesNotMatch(html, /circusarata@gmail\.com ↗|class="footer-mail"/);
   assert.doesNotMatch(html, /codex-preview|Your site is taking shape/);
+});
+
+test("server-renders the contact form page", async () => {
+  const response = await render("/contact");
+  assert.equal(response.status, 200);
+
+  const html = await response.text();
+  assert.match(html, /<title>お問い合わせ｜PYGMIX<\/title>/i);
+  assert.match(html, /CONTACT \/ PYGMIX STUDIO/);
+  assert.match(html, /name="email"/);
+  assert.match(html, /name="message"/);
+  assert.match(html, /メールアプリを開く/);
+  assert.match(html, /info@pygmix\.com/);
+  assert.doesNotMatch(html, /circusarata@gmail\.com/);
 });
 
 test("server-renders the System Audio Analyzer detail page", async () => {
