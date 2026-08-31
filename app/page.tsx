@@ -137,30 +137,6 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="principle" id="principle" aria-labelledby="principle-title">
-        <div className="principle-marquee" aria-hidden="true">
-          LOGIC <b>×</b> BODY <b>×</b> TOOLS <b>×</b>
-        </div>
-        <div className="principle-copy">
-          <p>ONE FOUNDATION / MANY OUTPUTS</p>
-          <h2 id="principle-title">理屈と身体のあいだに、創作のスイッチがある。</h2>
-          <div>
-            <p>
-              PYGMIXは、観察する、構造を見つける、実際に試す、道具の形にする、という往復から活動をつくります。
-            </p>
-            <p>
-              舞台、映像、調査、記録、学習ツール。見た目の違う成果が、同じ考え方から枝分かれしていきます。
-            </p>
-          </div>
-        </div>
-      </section>
-
-      <footer>
-        <a className="footer-wordmark" href="#top">
-          PYGMI<span>X</span>
-        </a>
-        <p>真面目にふざける。</p>
-      </footer>
     </main>
   );
 }

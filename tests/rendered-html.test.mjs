@@ -61,6 +61,9 @@ test("server-renders the PYGMIX home draft", async () => {
   assert.doesNotMatch(html, /chatgpt\.site/);
   assert.doesNotMatch(html, /GAMES|ゲーム|盤上|遊び|遊べ/);
   assert.doesNotMatch(html, /circusarata@gmail\.com ↗|class="footer-mail"/);
+  assert.doesNotMatch(html, /class="principle"|理屈と身体のあいだに|ONE FOUNDATION \/ MANY OUTPUTS/);
+  assert.doesNotMatch(html, /class="footer-wordmark"|>真面目にふざける。<\/p>/);
+  assert.doesNotMatch(html, /href="#principle">ABOUT<\/a>/);
   assert.doesNotMatch(html, /codex-preview|Your site is taking shape/);
 });
 

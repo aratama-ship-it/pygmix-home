@@ -235,7 +235,6 @@ export default function OrbitHero() {
         <nav aria-label="メインナビゲーション">
           <a href="#activities">WORKS</a>
           <a href="#projects">PROJECTS</a>
-          <a href="#principle">ABOUT</a>
           <a href="/contact">CONTACT</a>
         </nav>
 
