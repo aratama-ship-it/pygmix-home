@@ -24,7 +24,17 @@ export default function ContactPage() {
           <p>CONTACT / PYGMIX STUDIO</p>
           <h1 id="contact-title">お問い合わせ</h1>
           <p>
-            制作、上演・出演、取材、ツールやアプリについて、こちらからご連絡ください。
+            {[
+              "制作、",
+              "上演・出演、",
+              "取材、",
+              "ツールやアプリについて、",
+              "こちらからご連絡ください。",
+            ].map((phrase) => (
+              <span className="contact-phrase" key={phrase}>
+                {phrase}
+              </span>
+            ))}
           </p>
           <p className="contact-delivery-note">
             現在は、入力後にお使いのメールアプリが開きます。内容をご確認のうえ送信してください。

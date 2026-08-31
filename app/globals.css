@@ -2090,10 +2090,11 @@ a.collage-card:focus-visible {
 
 .contact-intro h1 {
   margin: 0;
-  font-size: clamp(54px, 7vw, 104px);
+  font-size: clamp(46px, 5.2vw, 78px);
   font-weight: 600;
   letter-spacing: -0.075em;
   line-height: 0.94;
+  white-space: nowrap;
 }
 
 .contact-intro h1 + p {
@@ -2101,6 +2102,11 @@ a.collage-card:focus-visible {
   margin: 38px 0 0;
   font-size: clamp(14px, 1.3vw, 18px);
   line-height: 1.9;
+}
+
+.contact-phrase {
+  display: inline-block;
+  white-space: nowrap;
 }
 
 .contact-delivery-note {
@@ -2844,7 +2850,7 @@ footer p {
   }
 
   .contact-intro h1 {
-    font-size: 52px;
+    font-size: 46px;
   }
 
   .contact-form {

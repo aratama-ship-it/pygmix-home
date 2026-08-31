@@ -71,6 +71,7 @@ test("server-renders the contact form page", async () => {
   const html = await response.text();
   assert.match(html, /<title>お問い合わせ｜PYGMIX<\/title>/i);
   assert.match(html, /CONTACT \/ PYGMIX STUDIO/);
+  assert.match(html, /class="contact-phrase">ツールやアプリについて、<\/span>/);
   assert.match(html, /name="email"/);
   assert.match(html, /name="message"/);
   assert.match(html, /メールアプリを開く/);
@@ -109,14 +110,17 @@ test("server-renders the System Audio Analyzer detail page", async () => {
 });
 
 test("removes the disposable starter preview", async () => {
-  const [page, layout, packageJson] = await Promise.all([
+  const [page, layout, packageJson, styles] = await Promise.all([
     readFile(new URL("../app/page.tsx", import.meta.url), "utf8"),
     readFile(new URL("../app/layout.tsx", import.meta.url), "utf8"),
     readFile(new URL("../package.json", import.meta.url), "utf8"),
+    readFile(new URL("../app/globals.css", import.meta.url), "utf8"),
   ]);
 
   assert.doesNotMatch(page, /SkeletonPreview|codex-preview/);
   assert.match(layout, /lang="ja"/);
   assert.doesNotMatch(packageJson, /react-loading-skeleton/);
+  assert.match(styles, /\.contact-intro h1\s*\{[^}]*white-space:\s*nowrap/s);
+  assert.match(styles, /\.contact-phrase\s*\{[^}]*white-space:\s*nowrap/s);
   await assert.rejects(access(new URL("../app/_sites-preview", import.meta.url)));
 });
