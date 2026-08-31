@@ -2225,6 +2225,59 @@ a.collage-card:focus-visible {
   border-bottom: 1px solid currentColor;
 }
 
+.site-footer {
+  display: grid;
+  grid-template-columns: 1fr auto auto;
+  align-items: center;
+  gap: clamp(28px, 5vw, 80px);
+  min-height: 122px;
+  padding: 30px clamp(20px, 4.2vw, 68px);
+  border-top: 1px solid var(--line);
+  background: var(--paper-light);
+}
+
+.site-footer-wordmark {
+  width: max-content;
+  font-size: 28px;
+  font-weight: 700;
+  letter-spacing: -0.045em;
+  line-height: 1;
+}
+
+.site-footer-wordmark span {
+  display: inline-block;
+  margin-left: 0.03em;
+  color: var(--red);
+  font-weight: 500;
+  transform: rotate(-5deg);
+}
+
+.site-footer nav {
+  display: flex;
+  gap: clamp(18px, 2.5vw, 40px);
+  font-family: var(--mono);
+  font-size: 8px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+}
+
+.site-footer nav a {
+  border-bottom: 1px solid transparent;
+}
+
+.site-footer nav a:hover {
+  border-color: currentColor;
+}
+
+.site-footer > p {
+  margin: 0;
+  color: rgb(32 37 34 / 0.58);
+  font-family: var(--mono);
+  font-size: 8px;
+  letter-spacing: 0.08em;
+  white-space: nowrap;
+}
+
 @media (max-width: 900px) {
   .audio-feature-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -2232,6 +2285,14 @@ a.collage-card:focus-visible {
 
   .contact-layout {
     grid-template-columns: 1fr;
+  }
+
+  .site-footer {
+    grid-template-columns: 1fr auto;
+  }
+
+  .site-footer > p {
+    grid-column: 1 / -1;
   }
 }
 
@@ -2647,6 +2708,22 @@ a.collage-card:focus-visible {
 
   .activity-image-archive {
     min-height: 420px;
+  }
+
+  .site-footer {
+    grid-template-columns: 1fr;
+    gap: 24px;
+    min-height: 180px;
+    padding-top: 34px;
+    padding-bottom: 30px;
+  }
+
+  .site-footer nav {
+    flex-wrap: wrap;
+  }
+
+  .site-footer > p {
+    grid-column: auto;
   }
 
 }

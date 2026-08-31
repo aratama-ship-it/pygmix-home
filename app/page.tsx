@@ -137,6 +137,16 @@ export default function Home() {
         </div>
       </section>
 
+      <footer className="site-footer">
+        <a className="site-footer-wordmark" href="#top" aria-label="ページ上部へ戻る">
+          PYGMI<span>X</span>
+        </a>
+        <nav aria-label="フッターナビゲーション">
+          <a href="/contact">CONTACT →</a>
+          <a href="#top">PAGE TOP ↑</a>
+        </nav>
+        <p>© 2026 PYGMIX</p>
+      </footer>
     </main>
   );
 }

@@ -64,6 +64,9 @@ test("server-renders the PYGMIX home draft", async () => {
   assert.doesNotMatch(html, /class="principle"|理屈と身体のあいだに|ONE FOUNDATION \/ MANY OUTPUTS/);
   assert.doesNotMatch(html, /class="footer-wordmark"|>真面目にふざける。<\/p>/);
   assert.doesNotMatch(html, /href="#principle">ABOUT<\/a>/);
+  assert.match(html, /<footer class="site-footer">/);
+  assert.match(html, /href="\/contact">CONTACT →<\/a>/);
+  assert.match(html, /© 2026 PYGMIX/);
   assert.doesNotMatch(html, /codex-preview|Your site is taking shape/);
 });
 
