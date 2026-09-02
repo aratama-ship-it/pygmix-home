@@ -22,7 +22,7 @@ type OrbitItem = {
   delay: string;
 };
 
-/* 皿はLIVE PROJECTSの8件＋YouTubeの入門動画。52秒で1周するので約5.78秒ずつずらす。
+/* 皿はLIVE PROJECTSの9件＋YouTubeの入門動画。52秒で1周するので5.2秒ずつずらす。
    面の画像は各配信元から取り込んで640px/192pxに縮小した同梱コピー。皿は全部が初回表示に
    出るため遅延読み込みが効かず、配信元の原寸（合計6.36MB）を直接読むと初回表示が重くなる。 */
 const orbitItems: readonly OrbitItem[] = [
@@ -48,7 +48,7 @@ const orbitItems: readonly OrbitItem[] = [
     credit: "BETA",
     href: "https://juggling-trajectory-analyzer-54347579590.asia-northeast1.run.app/",
     external: true,
-    delay: "-5.78s",
+    delay: "-5.2s",
   },
   {
     id: "koubo",
@@ -60,7 +60,7 @@ const orbitItems: readonly OrbitItem[] = [
     credit: "koubo.art-monosashi.com",
     href: "https://koubo.art-monosashi.com/",
     external: true,
-    delay: "-11.56s",
+    delay: "-10.4s",
   },
   {
     id: "audio",
@@ -72,7 +72,19 @@ const orbitItems: readonly OrbitItem[] = [
     credit: "BETA / BUILD 28",
     href: "/system-audio-analyzer",
     external: false,
-    delay: "-17.33s",
+    delay: "-15.6s",
+  },
+  {
+    id: "oto-no-memo",
+    className: "orbit-oto-no-memo",
+    icon: "/visuals/icon-oto-no-memo.svg",
+    label: "音のメモ",
+    category: "MACOS / MELODY",
+    mix: "KEY → SOUND",
+    credit: "VERSION 0.3.0",
+    href: "/oto-no-memo",
+    external: false,
+    delay: "-20.8s",
   },
   {
     id: "joseikin",
@@ -84,7 +96,7 @@ const orbitItems: readonly OrbitItem[] = [
     credit: "joseikin.art-monosashi.com",
     href: "https://joseikin.art-monosashi.com/",
     external: true,
-    delay: "-23.11s",
+    delay: "-26s",
   },
   {
     id: "diabolo48",
@@ -96,7 +108,7 @@ const orbitItems: readonly OrbitItem[] = [
     credit: "制作中",
     href: "https://aratama-ship-it.github.io/diabolo4yeargame/",
     external: true,
-    delay: "-28.89s",
+    delay: "-31.2s",
   },
   {
     id: "fridge",
@@ -108,7 +120,7 @@ const orbitItems: readonly OrbitItem[] = [
     credit: "GITHUB PAGES",
     href: "https://aratama-ship-it.github.io/fridge-leftovers/",
     external: true,
-    delay: "-34.67s",
+    delay: "-36.4s",
   },
   {
     id: "venue",
@@ -120,7 +132,7 @@ const orbitItems: readonly OrbitItem[] = [
     credit: "venue.art-monosashi.com",
     href: "https://venue.art-monosashi.com/",
     external: true,
-    delay: "-40.44s",
+    delay: "-41.6s",
   },
   {
     id: "mesure",
@@ -132,7 +144,7 @@ const orbitItems: readonly OrbitItem[] = [
     credit: "mesure.art-monosashi.com",
     href: "https://mesure.art-monosashi.com/",
     external: true,
-    delay: "-46.22s",
+    delay: "-46.8s",
   },
 ];
 
@@ -151,7 +163,7 @@ export default function OrbitHero() {
         CREATIVE STUDIO
       </p>
       <p className="orbit-corner orbit-corner-right">
-        NINE PLATES
+        TEN PLATES
         <br />
         ONE FOUNDATION
       </p>
@@ -177,7 +189,7 @@ export default function OrbitHero() {
 
       <div
         className="orbit-items"
-        aria-label="入口から出口へ流れるPYGMIXの9つのプロジェクト"
+        aria-label="入口から出口へ流れるPYGMIXの10のプロジェクト"
       >
         {orbitItems.map((item) => {
           const visual = (

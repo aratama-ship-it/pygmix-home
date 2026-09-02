@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>音のメモ 配布ページ — 参照方針</title>
+  <style>
+    :root {
+      --ink: #202522;
+      --paper: #f3f0e7;
+      --paper-light: #faf8f2;
+      --red: #c94d43;
+      --amber: #e89a28;
+      --line: rgb(32 37 34 / 0.24);
+      --mono: "SFMono-Regular", "Roboto Mono", Consolas, monospace;
+      --sans: "Avenir Next", Avenir, "Helvetica Neue", "Hiragino Kaku Gothic ProN", sans-serif;
+    }
+    * { box-sizing: border-box; }
+    body { margin: 0; color: var(--ink); background: var(--paper); font-family: var(--sans); }
+    main { width: min(1120px, calc(100% - 40px)); margin: 48px auto 72px; }
+    header { display: grid; grid-template-columns: 1fr minmax(280px, .6fr); gap: 40px; padding-bottom: 32px; border-bottom: 2px solid var(--ink); }
+    .eyebrow, .state { font: 700 11px/1.4 var(--mono); letter-spacing: .12em; }
+    .eyebrow { color: var(--red); }
+    h1 { max-width: 760px; margin: 12px 0; font-size: clamp(34px, 6vw, 70px); letter-spacing: -.055em; line-height: .98; }
+    header p { margin: 0; line-height: 1.75; }
+    .decision { align-self: end; padding: 20px; color: var(--paper-light); background: var(--ink); }
+    .decision strong { display: block; margin-top: 8px; color: #f2b348; font-size: 22px; line-height: 1.35; }
+    h2 { margin: 44px 0 18px; font-size: 26px; }
+    .grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+    article { padding: 22px; border: 1px solid var(--line); background: var(--paper-light); }
+    article h3 { margin: 8px 0 12px; font-size: 21px; }
+    article p, article li { font-size: 14px; line-height: 1.75; }
+    article ul { margin: 12px 0 0; padding-left: 1.25em; }
+    article a { color: var(--red); text-underline-offset: 3px; }
+    .label { color: rgb(32 37 34 / .62); font: 700 10px/1.4 var(--mono); letter-spacing: .12em; }
+    .chain { display: grid; grid-template-columns: repeat(5, 1fr); border: 1px solid var(--ink); }
+    .chain div { min-height: 148px; padding: 18px; border-right: 1px solid var(--line); }
+    .chain div:last-child { border: 0; }
+    .chain b { display: block; margin-bottom: 10px; color: var(--red); font: 700 10px/1.4 var(--mono); letter-spacing: .1em; }
+    .chain p { margin: 0; font-size: 13px; line-height: 1.65; }
+    .boundary { margin-top: 18px; padding: 20px; border-left: 7px solid var(--amber); background: #fffaf0; line-height: 1.75; }
+    @media (max-width: 760px) {
+      main { width: min(100% - 24px, 560px); margin-top: 24px; }
+      header, .grid { grid-template-columns: 1fr; }
+      .chain { grid-template-columns: 1fr; }
+      .chain div { min-height: 0; border-right: 0; border-bottom: 1px solid var(--line); }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <header>
+      <div>
+        <p class="eyebrow">REFERENCE BRIEF / 2026-09-02</p>
+        <h1>音を確認するまでが速い。</h1>
+        <p>音階や短いメロディを確かめたい人が、楽器やMIDI機器を用意せず、Macを開いてPCキーボードからすぐ発音できることを中心価値にする。</p>
+      </div>
+      <aside class="decision">
+        <span class="state">SELECTED DIRECTION</span>
+        <strong>約束・操作・ダウンロードを、最初の画面にまとめる。</strong>
+      </aside>
+    </header>
+
+    <h2>直接確認した参照</h2>
+    <section class="grid" aria-label="参照サイトの比較">
+      <article>
+        <span class="label">CURRENT BRAND / VERIFIED</span>
+        <h3>PYGMIX</h3>
+        <p>公開中のホームは紙色・黒・赤を基調に、一覧カードから個別の製品ページへ進む構造。</p>
+        <ul>
+          <li><b>採用:</b> 既存の製品番号、戻り導線、紙面調をそのまま拡張。</li>
+          <li><b>不採用:</b> 既存音響アプリの機能数に合わせて説明量を増やさない。</li>
+        </ul>
+        <p><a href="https://pygmix.com/">公開ホーム</a> ／ <a href="https://pygmix.com/system-audio-analyzer">既存製品ページ</a></p>
+      </article>
+
+      <article>
+        <span class="label">MUSICAL TASK / VERIFIED</span>
+        <h3>Ableton Note</h3>
+        <p>機能名の羅列より先に「アイデアを始める」「メロディから始める」など、利用者の音楽的な用事で構成している。</p>
+        <ul>
+          <li><b>採用:</b> 「音階を確認」「メロディを試す」を見出しにする。</li>
+          <li><b>不採用:</b> 制作・編集・クラウド連携まで広げたDAW的な物語。</li>
+        </ul>
+        <p><a href="https://www.ableton.com/en/note/">Ableton Note 公式ページ</a></p>
+      </article>
+
+      <article>
+        <span class="label">FAST AUDIO UTILITY / VERIFIED</span>
+        <h3>Rogue Amoeba Farrago</h3>
+        <p>「Fast」と、キーボード／マウスで即座に音を出せる説明、ダウンロード操作が近接している。</p>
+        <ul>
+          <li><b>採用:</b> 速さの約束を、具体的な入力方法とCTAで証明する。</li>
+          <li><b>不採用:</b> 評価コメント、用途別の長い列、購入比較。</li>
+        </ul>
+        <p><a href="https://www.rogueamoeba.com/farrago/">Farrago 公式ページ</a></p>
+      </article>
+
+      <article>
+        <span class="label">DOWNLOAD CLARITY / VERIFIED</span>
+        <h3>Audacity + Apple Support</h3>
+        <p>Audacityは版・CPU別DMG・チェックサム・対応環境を明示。Appleは未確認アプリの危険性と、利用者が選ぶ場合の正規手順を説明している。</p>
+        <ul>
+          <li><b>採用:</b> 版、Apple Silicon、macOS要件、SHA-256、未公証状態を一か所にまとめる。</li>
+          <li><b>不採用:</b> 未公証の警告を小さく隠すこと、安易にセキュリティ解除を勧めること。</li>
+        </ul>
+        <p><a href="https://www.audacityteam.org/download/mac/">Audacity macOS版</a> ／ <a href="https://support.apple.com/ja-jp/guide/mac-help/mh40616/mac">Apple公式案内</a></p>
+      </article>
+    </section>
+
+    <h2>設計への変換</h2>
+    <section class="chain" aria-label="利用状況から実装までの因果関係">
+      <div><b>USER</b><p>頭の中の音、歌っている音、短い旋律を確かめたい。</p></div>
+      <div><b>OBSTACLE</b><p>楽器、MIDI機器、DAWの準備をするほどではない。</p></div>
+      <div><b>REQUIREMENT</b><p>起動、理解、最初の発音までの操作を短くする。</p></div>
+      <div><b>PAGE PRINCIPLE</b><p>「PCキーボードを押す」を、最初の画面で見せる。</p></div>
+      <div><b>IMPLEMENTATION</b><p>主見出し、実画面、DMG、対応環境を一画面に置く。</p></div>
+    </section>
+
+    <p class="boundary"><b>公開境界:</b> この資料と実装はローカル確認用。公開・デプロイは別の明示承認後に行う。現行DMGはアドホック署名・未公証のため、配布ページでは状態とApple公式案内を明記する。</p>
+  </main>
+</body>
+</html>

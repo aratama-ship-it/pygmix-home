@@ -31,14 +31,16 @@ test("server-renders the PYGMIX home draft", async () => {
   const html = await response.text();
   assert.match(html, /<title>PYGMIX｜真面目にふざける。<\/title>/i);
   assert.match(html, /CROSS-DISCIPLINARY.*CREATIVE STUDIO/);
-  assert.match(html, /NINE PLATES/);
+  assert.match(html, /TEN PLATES/);
   assert.match(html, />入口</);
   assert.match(html, />出口</);
-  assert.equal([...html.matchAll(/class="orbit-item /g)].length, 9);
+  assert.equal([...html.matchAll(/class="orbit-item /g)].length, 10);
   assert.doesNotMatch(html, /ACTIVITY INDEX|ひとつじゃない。|でも、ばらばらでもない。/);
   assert.match(html, /JuggleLine/);
   assert.match(html, /System Audio Analyzer/);
   assert.match(html, /href="\/system-audio-analyzer"/);
+  assert.match(html, /音のメモ/);
+  assert.match(html, /href="\/oto-no-memo"/);
   assert.match(html, /公募ものさし/);
   assert.match(html, /助成ものさし/);
   assert.match(html, /会場ものさし/);
@@ -113,6 +115,31 @@ test("server-renders the System Audio Analyzer detail page", async () => {
   assert.match(html, /Build 28/i);
   assert.match(html, /Developer ID公証前/);
   assert.match(html, /circusarata@gmail\.com/);
+});
+
+test("server-renders the 音のメモ download page", async () => {
+  const response = await render("/oto-no-memo");
+  assert.equal(response.status, 200);
+
+  const html = await response.text();
+  assert.match(html, /<title>音のメモ｜PYGMIX<\/title>/i);
+  assert.match(html, /起動したら、すぐ音を確認。/);
+  assert.match(html, /JISキーボード/);
+  assert.match(html, /VERSION 0\.3\.0/);
+  assert.match(html, /APPLE SILICON/);
+  assert.match(html, /macOS 14/);
+  assert.match(html, /macOS専用デスクトップアプリ/);
+  assert.match(html, /Windows・iPhone・iPadには対応していません/);
+  assert.match(html, /Developer ID署名・Apple公証前/);
+  assert.match(html, /oto-no-memo-0\.3\.0-macos-arm64\.dmg/);
+  assert.match(html, /visuals\/icon-oto-no-memo\.svg/);
+  assert.match(html, /2aa55b7f47ec142257900f5c0cbd8cfd22b9536e7d7c35b75405e93972e356b6/);
+  await Promise.all([
+    access(new URL("../public/downloads/oto-no-memo-0.3.0-macos-arm64.dmg", import.meta.url)),
+    access(new URL("../public/visuals/icon-oto-no-memo.svg", import.meta.url)),
+    access(new URL("../public/visuals/oto-no-memo-app.jpg", import.meta.url)),
+    access(new URL("../public/visuals/oto-no-memo-keymap.jpg", import.meta.url)),
+  ]);
 });
 
 test("removes the disposable starter preview", async () => {

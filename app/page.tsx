@@ -35,6 +35,16 @@ const projectLinks: readonly ProjectLink[] = [
     external: false,
   },
   {
+    className: "project-melody",
+    index: "P-04",
+    category: "MACOS / MELODY CHECK",
+    title: "音のメモ",
+    note: "JISキーボードを押して、音階や短いメロディをすぐ確かめるMacアプリ。ピアノとサイン波に対応。",
+    href: "/oto-no-memo",
+    action: "アプリの詳細・ダウンロード →",
+    external: false,
+  },
+  {
     className: "project-koubo",
     index: "M-01",
     category: "OPEN CALLS",
@@ -104,7 +114,7 @@ export default function Home() {
 
       <section className="projects" id="projects" aria-labelledby="projects-title">
         <div className="projects-heading">
-          <p>LIVE PROJECTS / 01—08</p>
+          <p>LIVE PROJECTS / 01—09</p>
           <h2 id="projects-title">ライブラリ</h2>
           <p>
             身体と音を解析するツール、条件や根拠を比べる「ものさし」シリーズ、記録と生活の道具。
