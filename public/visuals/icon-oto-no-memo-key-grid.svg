@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" role="img" aria-labelledby="title desc">
+  <title id="title">音のメモ：Key Grid案</title>
+  <desc id="desc">整然と並んだ二段のPCキーと、オレンジ色の選択キー</desc>
+  <rect x="72" y="72" width="880" height="880" rx="196" fill="#f9f6ee" stroke="#1f1f1c" stroke-width="26"/>
+  <rect x="130" y="246" width="764" height="536" rx="46" fill="#1f1f1c"/>
+  <g fill="#f9f6ee">
+    <rect x="166" y="286" width="76" height="188" rx="15"/><rect x="258" y="286" width="76" height="188" rx="15"/>
+    <rect x="350" y="286" width="76" height="188" rx="15"/><rect x="442" y="286" width="76" height="188" rx="15"/>
+    <rect x="534" y="286" width="76" height="188" rx="15"/><rect x="626" y="286" width="76" height="188" rx="15"/>
+    <rect x="718" y="286" width="76" height="188" rx="15"/><rect x="810" y="286" width="48" height="188" rx="15"/>
+    <rect x="166" y="510" width="76" height="232" rx="15"/><rect x="258" y="510" width="76" height="232" rx="15"/>
+    <rect x="350" y="510" width="76" height="232" rx="15"/><rect x="442" y="510" width="76" height="232" rx="15"/>
+    <rect x="626" y="510" width="76" height="232" rx="15"/><rect x="718" y="510" width="76" height="232" rx="15"/>
+    <rect x="810" y="510" width="48" height="232" rx="15"/>
+  </g>
+  <rect x="534" y="510" width="76" height="232" rx="15" fill="#e88f1f"/>
+</svg>
