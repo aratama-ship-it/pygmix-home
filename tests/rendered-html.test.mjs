@@ -87,6 +87,32 @@ test("server-renders the contact form page", async () => {
   assert.doesNotMatch(html, /circusarata@gmail\.com/);
 });
 
+/* 2026-09-05: ?lang=en の簡易英語対応。
+   ★サイト全体の多言語化ではなく、このページだけを ?lang=en で切り替える。 */
+test("contact page: ?lang=en switches the visible text to English", async () => {
+  const response = await render("/contact?lang=en");
+  assert.equal(response.status, 200);
+
+  const html = await response.text();
+  assert.match(html, /<title>お問い合わせ｜PYGMIX<\/title>/i); // <title> はJapanese固定（metadataはlang未対応）
+  assert.match(html, /CONTACT \/ PYGMIX STUDIO/);
+  assert.match(html, /class="contact-phrase">or tools and apps — <\/span>/);
+  assert.match(html, />Name \*<\/span>/);
+  assert.match(html, />Open email app ↗<\/button>/);
+  assert.match(html, /If your email app doesn&#x27;t open, please write directly to /); // Reactはアポストロフィをエスケープする
+  assert.doesNotMatch(html, /お問い合わせ種別/);
+});
+
+test("contact page: ?category=tool&subject=... pre-fills the form", async () => {
+  const response = await render("/contact?category=tool&subject=%E8%88%9E%E5%8F%B0%E3%82%B9%E3%82%B1%E3%83%83%E3%83%81");
+  assert.equal(response.status, 200);
+
+  const html = await response.text();
+  // 事前選択された<option>は selected 属性が付く
+  assert.match(html, /<option value="ツール・アプリ" selected="">/); // 静的HTMLではブール属性が selected="" になる
+  assert.match(html, /name="subject"[^>]*value="舞台スケッチ"/);
+});
+
 test("server-renders the System Audio Analyzer detail page", async () => {
   const workerUrl = new URL("../dist/server/index.js", import.meta.url);
   workerUrl.searchParams.set("audio-test", `${process.pid}-${Date.now()}`);
