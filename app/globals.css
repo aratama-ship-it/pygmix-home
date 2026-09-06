@@ -4042,6 +4042,27 @@ a.collage-card:focus-visible {
   }
 }
 
+/* ★縦が短い画面への備え（2026-09-06 実測で発見）。
+   円は calc(50% - 50px) にあるので、画面が縦に短いと円が上がり、
+   その上の空きが無くなる。幅の計算式（空き×1.905）はそのまま小さくなり続けるため、
+   1440×640でカード70px、1440×540では2pxまで潰れていた。 */
+
+/* 幅広×短い: 面の画像が読める大きさ（約156px）を割るので出さない。
+   1440×740で166px、730pxで156px、700pxで128px（実測）。 */
+@media (min-width: 1101px) and (max-height: 719px) {
+  .center-pickup {
+    display: none;
+  }
+}
+
+/* 1100px以下×短い: 350px幅のままだと円に重なる（1024×600で円の上端185pxに対し
+   皿込み下端222px・実測）。狭い側と同じ276pxまで詰める。 */
+@media (max-width: 1100px) and (max-height: 700px) {
+  .center-pickup {
+    width: min(276px, 62vw);
+  }
+}
+
 @media (max-width: 560px) {
   .center-pickup {
     top: 22px;
