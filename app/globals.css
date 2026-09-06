@@ -1033,28 +1033,46 @@ a.collage-card:focus-visible {
 }
 
 /* ---- 円のすぐ上に置く「いま見てほしいもの」 ----
-   ★面の画像に題も説明も入っているので、カードは画像だけにする（本人指示 2026-09-06
-     「右側の白い部分はいらない」）。PICKUP の札だけ画像の上へ小さく重ねる。
-   ★画像の高さ＝幅×336/640。置ける高さは幅ごとに違うので、下の狭い幅の指定を参照。
-   ★皿は円の真上には来ない（1440〜768pxで、幅320px以下なら円の上端まで空き・実測）。 */
+   ★このヒーローは回転寿司の比喩でできている。作品は「皿」（色の付いた楕円の縁）に載り、
+     コンベアのレールを52秒で1周する。PICKUPは「流れている中から一枚だけ引き上げて
+     手前に置いた皿」として組む。値の根拠は design/TOKEN_SHEET.md（そちらが正）。
+   ★四隅が同じ角丸・ピル型の札・大きめの影は使わない。この画面の語彙だけで作る。 */
 .center-pickup {
+  --pickup-ring: #d2ae58;  /* 皿の4色循環のうち金色。OGカードの明かりの溜まりと響く */
+  --pickup-room: calc(50vh - 50px - clamp(310px, 29vw, 390px) / 2 - 38px);
+
   position: absolute;
   top: calc(50% - 50px - clamp(310px, 29vw, 390px) / 2 - 14px);
   left: 50%;
   z-index: 14;
   display: block;
-  /* ★大きさは「円の上にどれだけ空きがあるか」で決まる。空きは画面の高さでも変わるので、
-     計算で出す。空き = 円の上端（50vh - 50px - 直径/2）から、上の余白16pxと円との間隔18pxを引いた分。
-     画像は 640×336 なので、幅 = 空き × 1.905。上限380px。 */
-  --pickup-room: calc(50vh - 50px - clamp(310px, 29vw, 390px) / 2 - 24px);
   width: min(420px, 70vw, calc(var(--pickup-room) * 1.905));
-  overflow: hidden;
-  border: 1px solid rgb(32 37 34 / 0.3);
-  border-radius: 10px;
+  /* ★皿と同じ対角だけ極端な角丸。四隅同径の角丸にはしない */
+  border: 1px solid rgb(32 37 34 / 0.35);
+  border-radius: 52px 8px 52px 8px;
   background: #191512;
-  box-shadow: 0 10px 30px rgb(32 37 34 / 0.18);
+  box-shadow: 0 7px 16px rgb(32 37 34 / 0.1);
   transform: translate(-50%, -100%);
   transition: transform 180ms ease, border-color 180ms ease;
+}
+
+/* 皿。既存の皿（.orbit-item::before）と同じ描き方。
+   ★既存は上下左右+16pxだが、それだと縦の空きを16px食う。横は空いているので
+     「横に広く・縦に浅い」楕円にして、縦のコストを14pxに抑える。 */
+.center-pickup::before {
+  position: absolute;
+  top: -7px;
+  left: -20px;
+  z-index: -1;
+  width: calc(100% + 40px);
+  height: calc(100% + 14px);
+  border: 5px solid color-mix(in srgb, var(--pickup-ring) 82%, var(--paper));
+  border-radius: 50%;
+  background: var(--paper-light);
+  box-shadow:
+    0 0 0 1px rgb(32 37 34 / 0.22),
+    0 10px 20px rgb(32 37 34 / 0.14);
+  content: "";
 }
 
 .center-pickup:hover {
@@ -1068,22 +1086,30 @@ a.collage-card:focus-visible {
   height: auto;
 }
 
-/* 札は画像の上へ。面の左上には「STAGE IMAGE STUDY」があるので右上に置く。
-   ★暗い面の上なので、地を明るくして読ませる（コントラストは design-lint で実測）。 */
+/* 札。門（入口 IN / 出口 OUT）の「上は角・下は丸」を、横長の語に合わせて縮めたもの。
+   ★地は不透明にする。半透明だと背後が画像になり、コントラストが判定できない。 */
 .center-pickup-label {
   position: absolute;
-  top: 8px;
-  right: 8px;
-  padding: 4px 7px;
-  border-radius: 3px;
-  /* ★地は不透明にする。半透明だと背後が画像になり、コントラストを判定できない
-     （design-lint が WARN=判定不能 を出した）。不透明なら ink との比が確定する。 */
+  top: 0;
+  right: 20px;
+  padding: 5px 9px 6px;
+  border: 1px solid rgb(32 37 34 / 0.35);
+  border-top: 0;
+  border-radius: 0 0 11px 11px;
   background: var(--paper-light);
   color: var(--ink);
   font-family: var(--mono);
   font-size: 6px;
   font-weight: 500;
   letter-spacing: 0.18em;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .center-pickup,
+  .center-pickup:hover {
+    transition: none;
+    transform: translate(-50%, -100%);
+  }
 }
 
 .center-index {
@@ -3996,17 +4022,11 @@ a.collage-card:focus-visible {
 }
 
 /* ---- 円の上のカードの、狭い幅での扱い ----
-   ★幅ごとに「使える下端」を1周52秒・全皿で実測して決めた:
-       1440px … 円の上端205まで（幅420pxでも空き）
-       1100px … 円の上端240まで
-        768px … 幅320px以下なら円の上端194まで／360px以上だと y=75 で皿に当たる
-        390px … 幅によらず y=110 まで
-   ★画像だけのカードは高さ＝幅×0.525。幅を決めると高さが決まるので、
-     「その幅で置ける下端」に収まるところまで幅を詰める。 */
+   ★幅ごとに「使える下端」を1周52秒・全皿で実測して決めた。数値は design/TOKEN_SHEET.md 参照。 */
 @media (max-width: 1100px) {
   .center-pickup {
-    top: clamp(22px, 3.2vw, 46px);
-    width: min(370px, 74vw);
+    top: clamp(24px, 3.2vw, 48px);
+    width: min(350px, 72vw);
     transform: translateX(-50%);
   }
 
@@ -4015,32 +4035,44 @@ a.collage-card:focus-visible {
   }
 }
 
-/* 1000px以下は円の位置が上がり、300px幅（高さ158px）だと円に重なる
-   （900pxで円の上端180px・実測）。幅を詰めて上へ寄せる。 */
 @media (max-width: 1000px) {
   .center-pickup {
-    top: clamp(16px, 2.4vw, 36px);
-    width: min(292px, 64vw);  /* ★300pxだと900pxで円（上端180px）にちょうど接する・実測 */
+    top: clamp(20px, 2.4vw, 40px);
+    width: min(276px, 62vw);
   }
 }
 
-/* ★560px以下は y=110 までしか使えず、左の隅ラベル（x18〜89 / y18〜38）も避ける。
-   幅160px（高さ約84px）で y20〜104。320pxでは 42vw で134pxまで縮み、
-   中央に置くと x93 から始まるので隅ラベルにも当たらない。 */
 @media (max-width: 560px) {
   .center-pickup {
-    top: 18px;
-    /* ★184pxだと390pxで下端116px＝皿に当たる（y=110まで）。48vwだと320pxで
-       中央に置いたとき左端83pxとなり隅ラベル（x18〜89）に当たる。168px/42vwが上限。 */
-    width: min(178px, 44vw);
+    top: 22px;
+    /* ★42vwだと390pxで皿込みの下端112px＝コンベアの皿（y=110まで）に当たり、
+       320pxでは皿の左端81pxが隅ラベル（x18〜89）に当たる。38vwが上限。 */
+    width: min(168px, 38vw);
   }
 
-  /* カードが160pxまで縮むので、札も一緒に小さくする（そのままだと面を覆う） */
+  /* カードが168pxまで縮むので、皿の張り出しと札も一緒に小さくする */
+  .center-pickup::before {
+    top: -5px;
+    left: -8px;
+    width: calc(100% + 16px);
+    height: calc(100% + 10px);
+    border-width: 3px;
+  }
+
   .center-pickup-label {
-    top: 5px;
-    right: 5px;
-    padding: 3px 5px;
+    right: 12px;
+    padding: 4px 6px 5px;
+    border-radius: 0 0 8px 8px;
     font-size: 5px;
     letter-spacing: 0.14em;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  @media (max-width: 1100px) {
+    .center-pickup,
+    .center-pickup:hover {
+      transform: translateX(-50%);
+    }
   }
 }
