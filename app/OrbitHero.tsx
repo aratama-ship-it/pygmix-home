@@ -216,6 +216,13 @@ export default function OrbitHero() {
               ) : (
                 <span
                   className={`orbit-plate${item.icon ? " orbit-plate-icon" : ""}`}
+                  /* ★アプリの皿は、その絵をぼかしたものを地色として敷く（本人指示 2026-09-07）。
+                     絵は皿ごとに違うのでCSS変数で渡す。 */
+                  style={
+                    item.icon
+                      ? ({ "--plate-art": `url(${item.icon})` } as CSSProperties)
+                      : undefined
+                  }
                 >
                   {item.icon ? <img src={item.icon} alt="" /> : null}
                   <span>{item.label}</span>
