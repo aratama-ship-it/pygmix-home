@@ -648,8 +648,11 @@ a.collage-card:focus-visible {
      それなのに以前は max(560px, 62svh) と画面の高さに比例させていたので、
      縦に長い表示ほど空きだけが増えていた（1937×1919 で 712px＝ヒーローの60%が
      空き・実測）。svh 依存をやめ、本体が収まる高さに固定する。
-     ★回転寿司の形（route-x / route-y）はここでは変えない。 */
-  min-height: 560px;
+     ★回転寿司の形（route-x / route-y）はここでは変えない。
+     ★560pxまで詰めたら「狭すぎる」との判断（2026-09-06）。本体477pxに対し
+       上下の余白が計98pxしか残らず、隅ラベルとヒント文にも皿が掠めていた。
+       620pxへ。余白は計143px＝ヒーローの23%で、狭い幅（390px・24%）とそろう。 */
+  min-height: 620px;
   overflow: hidden;
   border-bottom: 1px solid var(--line);
   background:
@@ -1561,23 +1564,17 @@ a.collage-card:focus-visible {
   margin: 0 auto clamp(26px, 3.2vw, 40px);
 }
 
-.pickup-heading > p {
-  margin: 0;
-  /* ★0.62だと var(--paper) の上で4.26:1（基準4.5:1）に届かない。design-lint C1 実測。
-     0.68で5.11:1。 */
-  color: rgb(32 37 34 / 0.68);
-  font-family: var(--mono);
-  font-size: 12px;
-  font-weight: 500;
-  letter-spacing: 0.16em;
-}
-
+/* ★題（舞台スケッチ）は面の画像の中にあるので、文字では繰り返さない（本人指示 2026-09-06）。
+   節の見出しは PICKUP が兼ねる。そのぶん字を大きくして見出しの重みを持たせる。
+   ★0.62だと var(--paper) の上で4.26:1（基準4.5:1）に届かない。design-lint C1 実測。 */
 .pickup-heading h2 {
   margin: 0;
-  font-size: clamp(34px, 3.8vw, 54px);
-  font-weight: 600;
-  letter-spacing: -0.03em;
-  line-height: 1.1;
+  color: rgb(32 37 34 / 0.78);
+  font-family: var(--mono);
+  font-size: clamp(17px, 1.8vw, 24px);
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  line-height: 1.2;
 }
 
 /* 画像＝OGカードの原寸640×336を上限に、左に写真・右に文言。狭い幅では縦に積む。 */
@@ -2943,7 +2940,7 @@ a.collage-card:focus-visible {
     --route-out: calc(50vw + 110px);
     --card-width: clamp(172px, 23vw, 200px);
     --card-height: clamp(118px, 15.5vw, 136px);
-    min-height: 500px;
+    min-height: 540px;
   }
 
   .orbit-card img {

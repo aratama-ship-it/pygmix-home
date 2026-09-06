@@ -129,8 +129,10 @@ export default function Home() {
           ★流れる皿でも中央の円でもないので、640×336の実寸に近い大きさで出せる。 */}
       <section className="pickup" id="pickup" aria-labelledby="pickup-title">
         <div className="pickup-heading">
-          <p>PICKUP</p>
-          <h2 id="pickup-title">舞台スケッチ</h2>
+          {/* ★題（舞台スケッチ）は面の画像の中にあるので、文字では繰り返さない
+              （本人指示 2026-09-06）。節の見出しは PICKUP が兼ねる。
+              読み上げ・画像が出ないときの題は、下の img の alt が持っている。 */}
+          <h2 id="pickup-title">PICKUP</h2>
         </div>
         <a
           className="pickup-card"

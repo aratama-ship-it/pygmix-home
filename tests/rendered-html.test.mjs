@@ -48,7 +48,9 @@ test("server-renders the PYGMIX home draft", async () => {
   assert.match(html, /class="pickup-card"/);
   assert.match(html, /pickup-face"[^>]*src="\/visuals\/og-stagesketch\.jpg"[^>]*width="640"[^>]*height="336"/);
   assert.match(html, /alt="舞台スケッチ — 舞台の立ち位置と動線を[^"]*"/);
-  assert.match(html, /<p>PICKUP<\/p>/);
+  /* ★題は面の画像の中にあるので文字では繰り返さない。節の見出しは PICKUP が兼ねる */
+  assert.match(html, /<h2 id="pickup-title">PICKUP<\/h2>/);
+  assert.doesNotMatch(html, /<h2 id="pickup-title">舞台スケッチ<\/h2>/);
   assert.equal([...html.matchAll(/class="pickup-card"/g)].length, 1, "PICKUPは1つだけ");
 
   /* あわせて見つけた不具合を直した:
