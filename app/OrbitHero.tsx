@@ -269,17 +269,19 @@ export default function OrbitHero() {
           <a href="#projects">PROJECTS</a>
           <a href="/contact">CONTACT</a>
         </nav>
-
-        <button
-          type="button"
-          className="orbit-toggle"
-          aria-pressed={paused}
-          onClick={() => setPaused((current) => !current)}
-        >
-          <span aria-hidden="true">{paused ? "▶" : "Ⅱ"}</span>
-          {paused ? "コンベアを再開" : "コンベアを止める"}
-        </button>
       </div>
+
+      {/* ★中央の楕円を皿より後ろのレイヤーへ移したため（2026-09-06）、楕円の中に置くと
+          皿に覆われて押せなくなる（実測で常時100%が皿の下）。楕円の外・皿より前面に出す。 */}
+      <button
+        type="button"
+        className="orbit-toggle"
+        aria-pressed={paused}
+        onClick={() => setPaused((current) => !current)}
+      >
+        <span aria-hidden="true">{paused ? "▶" : "Ⅱ"}</span>
+        {paused ? "コンベアを再開" : "コンベアを止める"}
+      </button>
 
       <p className="orbit-hint">
         ENTER <span aria-hidden="true">→</span> MIX <span aria-hidden="true">→</span> EXIT

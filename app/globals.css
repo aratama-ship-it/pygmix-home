@@ -637,7 +637,14 @@ a.collage-card:focus-visible {
   --route-x-inner: clamp(125px, 12.5vw, 180px);
   --route-y: clamp(120px, 15vh, 150px);
   --route-y-soft: clamp(80px, 10vh, 100px);
-  --route-out: calc(50vw + 160px);
+  /* ★間隔を一定にするための画面外の助走。皿（カード×1.2）の大きさに比例させる。
+     カード幅の4倍。等配分では角で -71px まで詰まるので、区切りの%も最適化する。
+     ★max の第2項は「画面の左右端を完全に越える」ための下限。これが無いと広い画面
+       （1920px 実測）で助走が足りず、皿が端で見切れたまま出入りする。 */
+  --route-out: max(
+    calc(var(--route-x) + var(--card-width) * 4),
+    calc(50vw + var(--card-width) * 0.75)
+  );
   --card-width: clamp(186px, 16.5vw, 224px);
   --card-height: clamp(126px, 10.9vw, 148px);
   position: relative;
@@ -858,8 +865,9 @@ a.collage-card:focus-visible {
   top: 0;
   left: 0;
   z-index: 0;
-  width: calc(var(--card-width) + 16px);
-  height: calc(var(--card-height) + 16px);
+  /* ★カードの1.2倍。+16pxでは縁が出ず、カードが皿からはみ出して見えていた */
+  width: calc(var(--card-width) * 1.2);
+  height: calc(var(--card-height) * 1.2);
   border: 5px solid color-mix(in srgb, var(--plate-ring) 82%, var(--paper));
   border-radius: 50%;
   background: var(--paper-light);
@@ -881,16 +889,14 @@ a.collage-card:focus-visible {
   overflow: hidden;
   margin: 0;
   border: 1px solid rgb(32 37 34 / 0.35);
-  border-radius: 52px 8px 52px 8px;
+  /* ★皿と同じ楕円にする。角丸の長方形だと角が必ず皿からはみ出す
+     （半径112,74の角は皿の内側の楕円115,77に対し (112/115)²+(74/77)²=1.87>1・実測）。 */
+  border-radius: 50%;
   background: var(--paper-light);
   box-shadow: 0 7px 16px rgb(32 37 34 / 0.1);
   transform: translate(-50%, -50%);
   pointer-events: auto;
   transition: box-shadow 220ms ease, filter 220ms ease, transform 220ms ease;
-}
-
-.orbit-item:nth-child(even) .orbit-card {
-  border-radius: 8px 62px 8px 62px;
 }
 
 .orbit-card:hover,
@@ -902,7 +908,7 @@ a.collage-card:focus-visible {
 
 .orbit-card img {
   width: 100%;
-  height: calc(100% - 43px);
+  height: 100%;
   object-fit: cover;
 }
 
@@ -925,10 +931,11 @@ a.collage-card:focus-visible {
 /* OGカードを持たないプロジェクトは、名前だけの面で見せる */
 .orbit-plate {
   display: flex;
-  height: calc(100% - 43px);
+  /* ★楕円いっぱいに広げ、下の札（bottom:16%）にかからないよう下に余白を取る */
+  height: 100%;
   align-items: center;
   justify-content: center;
-  padding: 8% 11%;
+  padding: 12% 20% 34%;
   color: var(--ink);
   background: var(--paper);
   text-align: center;
@@ -943,16 +950,18 @@ a.collage-card:focus-visible {
 }
 
 /* アイコンを持つアプリは、アイコン＋名前の面にする */
+/* ★アイコン付きは横並びだと楕円の幅に収まらない。縦に積んで中央へ寄せる */
 .orbit-plate-icon {
-  gap: 8%;
-  justify-content: flex-start;
-  padding: 7% 9%;
+  flex-direction: column;
+  gap: 6%;
+  justify-content: center;
+  padding: 10% 18% 32%;
   background: var(--paper);
-  text-align: left;
+  text-align: center;
 }
 
 .orbit-plate-icon img {
-  width: 31%;
+  width: 30%;
   height: auto;
   flex: none;
   border: 1px solid rgb(32 37 34 / 0.16);
@@ -966,20 +975,36 @@ a.collage-card:focus-visible {
   letter-spacing: -0.04em;
 }
 
+/* ★楕円の中に収まる札にする。以前は左右いっぱいの帯だったので、楕円にすると
+   両端が切れて文字が読めなくなる。楕円の弦の幅は下へ行くほど狭く、下から16%の高さでは
+   カード幅の73%（実測）。70%に収める。 */
 .orbit-caption {
   position: absolute;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  display: grid;
-  grid-template-columns: 1fr auto;
-  gap: 8px;
+  bottom: 16%;
+  left: 50%;
+  display: flex;
+  width: 70%;
+  flex-direction: column;
   align-items: center;
-  min-height: 43px;
-  padding: 7px 10px 6px;
-  border-top: 1px solid rgb(32 37 34 / 0.22);
+  gap: 2px;
+  padding: 5px 10px 6px;
+  border: 1px solid rgb(32 37 34 / 0.18);
+  border-radius: 999px;
   color: var(--ink);
   background: rgb(250 248 242 / 0.96);
+  transform: translateX(-50%);
+  text-align: center;
+}
+
+.orbit-caption > span {
+  display: contents;
+}
+
+/* ★配信元（credit）は札に入りきらない。6pxでも41字＝164pxあり、札の157pxを超えて
+   切れていた（stagesketch-try.juggler-arata.workers.dev で実測）。皿では出さない。
+   同じ情報は下のライブラリの各カードに載っている。 */
+.orbit-caption small {
+  display: none;
 }
 
 .orbit-caption > span {
@@ -1019,10 +1044,14 @@ a.collage-card:focus-visible {
   position: absolute;
   top: calc(50% - 50px);
   left: 50%;
-  z-index: 12;
+  /* ★皿（.orbit-items = z-index 4）より後ろへ。レール（0）よりは前（本人指示 2026-09-06）。
+     皿が前を通るので、中の文字とリンクが隠れないかは実測して確かめること。 */
+  z-index: 2;
   display: flex;
-  width: clamp(310px, 29vw, 390px);
-  aspect-ratio: 1;
+  /* ★横長の楕円にする。楕円に内接する長方形は 幅/√2 × 高さ/√2 なので、
+     中身（ロゴ・キャッチ・ナビ）が収まる比を実測で選んだ。 */
+  width: clamp(360px, 41vw, 580px);
+  aspect-ratio: 1.62;
   flex-direction: column;
   align-items: center;
   justify-content: center;
@@ -1118,12 +1147,14 @@ a.collage-card:focus-visible {
 }
 
 .orbit-toggle {
-  position: relative;
-  z-index: 2;
+  /* ★皿（z-index 4）より前面に置く。中央の楕円の中に置くと常時皿の下になり押せない */
+  position: absolute;
+  bottom: clamp(22px, 3vw, 42px);
+  left: clamp(20px, 4.2vw, 68px);
+  z-index: 15;
   display: inline-flex;
   align-items: center;
   gap: 7px;
-  margin-top: 16px;
   /* ★design-lint実測で18px（基準44px）だった。見た目の高さは変えず、
      タップ面だけ広げる。 */
   min-height: 44px;
@@ -1187,6 +1218,12 @@ a.collage-card:focus-visible {
   z-index: 9;
 }
 
+/* ★皿の間隔を一定にする（本人指示 2026-09-06「下に来ると詰まっているのでバランスを
+   とってください。最初と中間でつまり具合が一緒にしてほしい」）。
+   以前は区切りが等間隔の%だったため、経路の長さと%が対応せず、
+   速さが 12.3〜32.0 px/% とばらつき、すき間が -90〜+67px（157pxのむら）になっていた。
+   各区切りの%を「区間の長さ ÷（皿の進行方向の張り出し + 目標のすき間）」に比例させる。
+   皿は楕円なので張り出しは 2√((A·ux)²+(B·uy)²)。目標のすき間は -20px。 */
 @keyframes conveyor-route {
   0% {
     opacity: 0;
@@ -1196,33 +1233,33 @@ a.collage-card:focus-visible {
     );
   }
 
-  3% {
+  12% {
     opacity: 1;
   }
 
-  15% {
+  28.23% {
     transform: translate(
       calc(0px - var(--route-x)),
       calc(0px - var(--route-y))
     );
   }
 
-  19% {
+  29.22% {
     transform: translate(
       calc(0px - var(--route-x)),
       calc(0px - var(--route-y-soft))
     );
   }
 
-  26% {
+  32.67% {
     transform: translate(calc(0px - var(--route-x)), 0);
   }
 
-  34% {
+  39.26% {
     transform: translate(calc(0px - var(--route-x-soft)), var(--route-y-soft));
   }
 
-  42% {
+  42.93% {
     transform: translate(calc(0px - var(--route-x-inner)), var(--route-y));
   }
 
@@ -1230,27 +1267,27 @@ a.collage-card:focus-visible {
     transform: translate(0, var(--route-y));
   }
 
-  58% {
+  57.07% {
     transform: translate(var(--route-x-inner), var(--route-y));
   }
 
-  66% {
+  60.74% {
     transform: translate(var(--route-x-soft), var(--route-y-soft));
   }
 
-  74% {
+  67.33% {
     transform: translate(var(--route-x), 0);
   }
 
-  81% {
+  70.78% {
     transform: translate(var(--route-x), calc(0px - var(--route-y-soft)));
   }
 
-  84% {
+  71.77% {
     transform: translate(var(--route-x), calc(0px - var(--route-y)));
   }
 
-  97% {
+  88% {
     opacity: 1;
   }
 
@@ -2937,23 +2974,17 @@ a.collage-card:focus-visible {
     --route-x-inner: clamp(95px, 12vw, 120px);
     --route-y: clamp(120px, 16vh, 140px);
     --route-y-soft: clamp(80px, 11vh, 95px);
-    --route-out: calc(50vw + 110px);
+    --route-out: max(
+      calc(var(--route-x) + var(--card-width) * 4),
+      calc(50vw + var(--card-width) * 0.75)
+    );
     --card-width: clamp(172px, 23vw, 200px);
     --card-height: clamp(118px, 15.5vw, 136px);
     min-height: 540px;
   }
 
-  .orbit-card img {
-    height: calc(100% - 39px);
-  }
-
   .orbit-caption {
-    min-height: 39px;
-    padding: 6px 8px 5px;
-  }
-
-  .orbit-caption small {
-    max-width: 80px;
+    padding: 4px 8px 5px;
   }
 
   .center-menu {
@@ -3002,7 +3033,10 @@ a.collage-card:focus-visible {
     --route-x-inner: 22vw;
     --route-y: 135px;
     --route-y-soft: 88px;
-    --route-out: calc(50vw + 95px);
+    --route-out: max(
+      calc(var(--route-x) + var(--card-width) * 4),
+      calc(50vw + var(--card-width) * 0.75)
+    );
     --card-width: 124px;
     --card-height: 90px;
     min-height: 480px;
@@ -3061,30 +3095,19 @@ a.collage-card:focus-visible {
   }
 
   .orbit-card {
-    border-radius: 38px 6px 38px 6px;
     box-shadow: 0 10px 24px rgb(32 37 34 / 0.14);
   }
 
-  .orbit-item:nth-child(even) .orbit-card {
-    border-radius: 6px 42px 6px 42px;
-  }
-
-  .orbit-card img {
-    height: calc(100% - 31px);
-  }
-
   .orbit-caption {
-    display: block;
-    min-height: 31px;
-    padding: 7px 8px 6px;
+    padding: 3px 7px 4px;
   }
 
   .orbit-caption b {
     font-size: 6px;
   }
 
-  .orbit-caption i,
-  .orbit-caption small {
+  /* 狭い幅では札がさらに小さいので、掛け合わせ（mix）まで入れると切れる */
+  .orbit-caption i {
     display: none;
   }
 
