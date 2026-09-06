@@ -630,21 +630,26 @@ a.collage-card:focus-visible {
 
 .orbit-hero {
   /* ★2026-09-06 見直し: 識別の帯（円・コンベア・門）を単独で100vhにせず、
-     約62vhへ詰めてPICKUPを専用セクション（.pickup）へ出す。
+     PICKUPを専用セクション（.pickup）へ出す。
      route-y・route-x とも新しい高さに合わせて実測で縮めた（design/TOKEN_SHEET.md）。 */
-  /* ★2026-09-06 追加見直し「回転寿司が広すぎるのでつめて舞台スケッチをよせましょう」。
-     route-x一式を約15%縮め、route-outも縮めた（① でopacityと位置の内挿を揃えたので、
-     画面外へ大きく逃がす必要がなくなった）。 */
-  --route-x: clamp(240px, 25vw, 340px);
-  --route-x-soft: clamp(195px, 19.5vw, 275px);
-  --route-x-inner: clamp(105px, 10.5vw, 150px);
+  --route-x: clamp(280px, 30vw, 400px);
+  --route-x-soft: clamp(230px, 23vw, 325px);
+  --route-x-inner: clamp(125px, 12.5vw, 180px);
   --route-y: clamp(120px, 15vh, 150px);
   --route-y-soft: clamp(80px, 10vh, 100px);
-  --route-out: calc(50vw + 80px);
+  --route-out: calc(50vw + 160px);
   --card-width: clamp(186px, 16.5vw, 224px);
   --card-height: clamp(126px, 10.9vw, 148px);
   position: relative;
-  min-height: max(560px, 62svh);
+  /* ★空いたスペースを詰める（本人指示 2026-09-06「回転すしの形は変えることなく
+     空いているスペースを詰めたかった」）。
+     回転寿司の本体（皿＋中央の円）は route-y と card-height が clamp の上限で
+     頭打ちになるため、大きい画面ではどれだけ広げても 477px で固定される。
+     それなのに以前は max(560px, 62svh) と画面の高さに比例させていたので、
+     縦に長い表示ほど空きだけが増えていた（1937×1919 で 712px＝ヒーローの60%が
+     空き・実測）。svh 依存をやめ、本体が収まる高さに固定する。
+     ★回転寿司の形（route-x / route-y）はここでは変えない。 */
+  min-height: 560px;
   overflow: hidden;
   border-bottom: 1px solid var(--line);
   background:
@@ -1188,10 +1193,11 @@ a.collage-card:focus-visible {
     );
   }
 
-  /* ★以前は3%で先にopacity:1にしていたが、位置はまだ0%→15%の内挿中＝画面外だった。
-     不透明度も同じ区間で0→1に内挿させ、画面内に収まる15%地点でちょうど1になるようにする。 */
-  15% {
+  3% {
     opacity: 1;
+  }
+
+  15% {
     transform: translate(
       calc(0px - var(--route-x)),
       calc(0px - var(--route-y))
@@ -1237,11 +1243,12 @@ a.collage-card:focus-visible {
     transform: translate(var(--route-x), calc(0px - var(--route-y-soft)));
   }
 
-  /* ★以前は97%までopacity:1のままで、位置は84%→100%の内挿中＝画面外へ向かっていた。
-     84%で明示的に1を保ち、100%（画面外）へ向けて不透明度も一緒に0へ落とす。 */
   84% {
-    opacity: 1;
     transform: translate(var(--route-x), calc(0px - var(--route-y)));
+  }
+
+  97% {
+    opacity: 1;
   }
 
   100% {
@@ -2928,12 +2935,12 @@ a.collage-card:focus-visible {
 
 @media (max-width: 900px) {
   .orbit-hero {
-    --route-x: clamp(180px, 24vw, 245px);
-    --route-x-soft: clamp(150px, 19vw, 195px);
-    --route-x-inner: clamp(80px, 10vw, 100px);
+    --route-x: clamp(210px, 28vw, 285px);
+    --route-x-soft: clamp(175px, 22vw, 230px);
+    --route-x-inner: clamp(95px, 12vw, 120px);
     --route-y: clamp(120px, 16vh, 140px);
     --route-y-soft: clamp(80px, 11vh, 95px);
-    --route-out: calc(50vw + 60px);
+    --route-out: calc(50vw + 110px);
     --card-width: clamp(172px, 23vw, 200px);
     --card-height: clamp(118px, 15.5vw, 136px);
     min-height: 500px;
@@ -2993,12 +3000,12 @@ a.collage-card:focus-visible {
   }
 
   .orbit-hero {
-    --route-x: calc(50vw - 60px);
-    --route-x-soft: calc(50vw - 78px);
-    --route-x-inner: 18vw;
+    --route-x: calc(50vw - 48px);
+    --route-x-soft: calc(50vw - 66px);
+    --route-x-inner: 22vw;
     --route-y: 135px;
     --route-y-soft: 88px;
-    --route-out: calc(50vw + 40px);
+    --route-out: calc(50vw + 95px);
     --card-width: 124px;
     --card-height: 90px;
     min-height: 480px;
