@@ -682,6 +682,65 @@ a.collage-card:focus-visible {
   text-align: right;
 }
 
+/* ---- 最上段の中央に置く「いま見てほしいもの」 ----
+   隅のラベルと同じ高さに並べる。★文字色は ink のまま（隅のラベルは 56% の薄さだが、
+   こちらは押せるリンクなので薄くしない）。★高さ44pxのタップ面を padding で確保する。 */
+.orbit-pickup {
+  position: absolute;
+  top: clamp(24px, 3.3vw, 48px);
+  left: 50%;
+  z-index: 16;
+  display: inline-flex;
+  align-items: center;
+  gap: 11px;
+  padding: 13px 20px;
+  transform: translateX(-50%);
+  border: 1px solid rgb(32 37 34 / 0.3);
+  border-radius: 999px;
+  background: rgb(250 248 242 / 0.88);
+  color: var(--ink);
+  white-space: nowrap;
+  transition: transform 180ms ease, background 180ms ease;
+}
+
+.orbit-pickup:hover {
+  background: var(--paper-light);
+  transform: translate(-50%, -2px);
+}
+
+.orbit-pickup-label {
+  font-family: var(--mono);
+  font-size: 7px;
+  font-weight: 500;
+  letter-spacing: 0.16em;
+}
+
+/* 見出しと中身のあいだに細い区切りを立てる */
+.orbit-pickup-label::after {
+  display: inline-block;
+  width: 1px;
+  height: 9px;
+  margin-left: 11px;
+  background: rgb(32 37 34 / 0.3);
+  content: "";
+  vertical-align: -1px;
+}
+
+.orbit-pickup-title {
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+
+.orbit-pickup-note {
+  font-size: 11px;
+  letter-spacing: 0.02em;
+}
+
+.orbit-pickup-arrow {
+  font-size: 11px;
+}
+
 .orbit-rail {
   position: absolute;
   top: 50%;
@@ -3937,5 +3996,24 @@ a.collage-card:focus-visible {
 
   .melody-product-footer > a:last-child {
     justify-self: start;
+  }
+}
+
+/* ---- PICKUP の狭い幅での扱い ----
+   ★既存の @media (max-width: 560px) は2か所あるので、そこへ差し込まず独立して置く。
+   ★横幅は実測で決めた: 説明を含めた 396px のままだと、620px あたりで左の隅ラベルに
+     ぶつかる。760px で説明を落として約218pxに縮め、それでも足りない 390px では
+     同じ行を諦めて隅のラベルの下（左ラベルの下端38px〜コンベア上端155px の間）へ置く。 */
+@media (max-width: 760px) {
+  .orbit-pickup-note {
+    display: none;
+  }
+}
+
+@media (max-width: 560px) {
+  .orbit-pickup {
+    top: clamp(54px, 15vw, 66px);
+    gap: 9px;
+    padding: 12px 16px;
   }
 }

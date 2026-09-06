@@ -168,6 +168,20 @@ export default function OrbitHero() {
         ONE FOUNDATION
       </p>
 
+      {/* いま見てほしいものを一つだけ、最上段の中央に置く。
+          左右の隅のラベルと同じ高さに並べ、狭い幅では一段下げる。 */}
+      <a
+        className="orbit-pickup"
+        href="https://stagesketch-try.juggler-arata.workers.dev/"
+        target="_blank"
+        rel="noreferrer"
+      >
+        <span className="orbit-pickup-label">PICKUP</span>
+        <span className="orbit-pickup-title">舞台スケッチ</span>
+        <span className="orbit-pickup-note">立ち位置と動線を、正面図と平面図で</span>
+        <span className="orbit-pickup-arrow" aria-hidden="true">↗</span>
+      </a>
+
       <div className="orbit-rail" aria-hidden="true">
         <span />
       </div>

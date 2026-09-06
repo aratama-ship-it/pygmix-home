@@ -36,6 +36,14 @@ test("server-renders the PYGMIX home draft", async () => {
   assert.match(html, />出口</);
   assert.equal([...html.matchAll(/class="orbit-item /g)].length, 10);
   assert.doesNotMatch(html, /ACTIVITY INDEX|ひとつじゃない。|でも、ばらばらでもない。/);
+  /* 2026-09-06: ヒーロー最上段の中央に「PICKUP」を1つ置く。
+     ★隅のラベルと同じ行に並ぶので、増やすなら幅を実測し直すこと
+       （説明込み396pxで620px幅から左の隅ラベルにぶつかる）。 */
+  assert.match(html, /class="orbit-pickup"/);
+  assert.match(html, /orbit-pickup-label">PICKUP</);
+  assert.match(html, /orbit-pickup-title">舞台スケッチ</);
+  assert.equal([...html.matchAll(/class="orbit-pickup"/g)].length, 1, "PICKUPは1つだけ");
+
   /* 2026-09-06: 舞台スケッチを作品一覧へ追加。★ここへ足したら見出しの件数
      「LIVE PROJECTS / 01—NN」も直すこと（表示件数と食い違うため）。 */
   assert.match(html, /舞台スケッチ/);
