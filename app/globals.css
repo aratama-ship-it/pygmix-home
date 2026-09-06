@@ -964,6 +964,12 @@ a.collage-card:focus-visible {
   width: 30%;
   height: auto;
   flex: none;
+  /* ★保険。flexの伸長が効くと絵が縦長になる（2026-09-07に縦長の報告あり。
+     こちらの実測では5画面×5枚すべて正方形で、原因はブラウザ側の古い描画だったが、
+     align-self を明示しておけば flex-direction がどちらでも伸びない）。
+     ★max-height は付けないこと。%パディングは幅基準で解決されるため内容領域の高さが
+       53.9pxしかなく、max-height:46% が24.8pxとなって絵を潰した（実測）。 */
+  align-self: center;
   border: 1px solid rgb(32 37 34 / 0.16);
   border-radius: 23%;
   aspect-ratio: 1;
