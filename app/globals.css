@@ -1045,7 +1045,8 @@ a.collage-card:focus-visible {
   left: 50%;
   z-index: 14;
   display: flex;
-  width: min(360px, 74vw);
+  width: min(440px, 80vw);
+  min-height: 104px;  /* ★面の画像を読める大きさにする */
   align-items: stretch;
   overflow: hidden;
   transform: translate(-50%, -100%);
@@ -1062,8 +1063,9 @@ a.collage-card:focus-visible {
   transform: translate(-50%, calc(-100% - 2px));
 }
 
+/* ★面の画像に「舞台スケッチ」の題が入っている。だから絵を大きく取り、文字は控える */
 .center-pickup-face {
-  width: 38%;
+  width: 46%;
   height: auto;
   flex: none;
   align-self: stretch;
@@ -1091,18 +1093,18 @@ a.collage-card:focus-visible {
 }
 
 .center-pickup-title {
-  font-size: 13px;
+  font-size: 11px;
   font-weight: 600;
   letter-spacing: 0.01em;
-  line-height: 1.5;  /* ★1.3は基準（1.5〜2.0）を下回る・design-lint T1 */
+  line-height: 1.6;  /* ★1.3は基準（1.5〜2.0）を下回る・design-lint T1 */
 }
 
 .center-pickup-note {
   overflow: hidden;
   color: rgb(32 37 34 / 0.66);
-  font-size: 9px;
+  font-size: 8px;
   letter-spacing: 0.01em;
-  line-height: 1.5;
+  line-height: 1.6;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
@@ -4021,12 +4023,14 @@ a.collage-card:focus-visible {
        1440px … y=592（円の上端205px。円のすぐ上はまるごと空き）
         768px … y=75
         390px … y=110
-     つまり狭い幅では「円のすぐ上」に皿が来る。そこへ置くと必ず重なるので、
-     1100px以下ではヒーローの上部（皿が来ない範囲）へ逃がす。 */
+     しかも空きの深さはカードの幅にもよる（幅が広いほど皿に早くぶつかる）。
+     そこで狭い幅ではヒーロー上部へ逃がしたうえ、カードも段階的に小さくする。
+     ★大きくするのは空きのある広い幅だけ。7幅で1周を通して実測して決めた。 */
 @media (max-width: 1100px) {
   .center-pickup {
     top: clamp(22px, 3.2vw, 46px);
-    width: min(330px, 76vw);
+    width: min(400px, 82vw);
+    min-height: 92px;
     transform: translateX(-50%);
   }
 
@@ -4039,11 +4043,20 @@ a.collage-card:focus-visible {
   }
 }
 
-/* ★390pxでは左の隅ラベル（y 18〜38）と重なるので、その下へ落とす。
-   このあたりは皿も来ない（中央帯で皿が来る最上端 y=110・実測）。 */
+/* 900px以下は、大きいままだと皿にぶつかる（768pxで209回・実測）ので従来の大きさへ */
+@media (max-width: 900px) {
+  .center-pickup {
+    width: min(330px, 80vw);
+    min-height: 0;
+  }
+}
+
+/* ★390pxでは左の隅ラベル（y 18〜38）と重なるので、その下（y48〜）へ落とす。
+   ★面を46%に広げたぶんカードの高さが伸び（画像の高さ＝幅×336/640）、264px幅では
+     y113まで届いて皿に当たった（実測）。240pxまで詰めると高さ約59pxで収まる。 */
 @media (max-width: 560px) {
   .center-pickup {
     top: 48px;
-    width: min(264px, 74vw);
+    width: min(240px, 68vw);
   }
 }
