@@ -1007,7 +1007,7 @@ a.collage-card:focus-visible {
   left: 50%;
   z-index: 12;
   display: flex;
-  width: clamp(268px, 31vw, 424px);  /* ★ロゴ上のカードの分だけ広げた（2026-09-06） */
+  width: clamp(310px, 29vw, 390px);
   aspect-ratio: 1;
   flex-direction: column;
   align-items: center;
@@ -1038,11 +1038,17 @@ a.collage-card:focus-visible {
      このカードの分だけ円の直径を390→424pxへ広げてある。
    ★タップ面は高さ44px以上（design-lint U1）。 */
 .center-pickup {
+  position: absolute;
+  /* 円の上端（中心 calc(50% - 50px) から直径の半分ぶん上）より、さらに18px上に
+     カードの下端が来るように置く。translateY(-100%) で下端をこの位置に合わせる。 */
+  top: calc(50% - 50px - clamp(310px, 29vw, 390px) / 2 - 18px);
+  left: 50%;
+  z-index: 14;
   display: flex;
-  width: 100%;
+  width: min(360px, 74vw);
   align-items: stretch;
   overflow: hidden;
-  margin: 0 0 16px;
+  transform: translate(-50%, -100%);
   border: 1px solid rgb(32 37 34 / 0.3);
   border-radius: 10px;
   background: #fff;
@@ -1053,7 +1059,7 @@ a.collage-card:focus-visible {
 
 .center-pickup:hover {
   border-color: rgb(32 37 34 / 0.55);
-  transform: translateY(-2px);
+  transform: translate(-50%, calc(-100% - 2px));
 }
 
 .center-pickup-face {
@@ -4010,36 +4016,34 @@ a.collage-card:focus-visible {
   }
 }
 
-/* ---- ロゴ上のカードの、狭い幅での扱い ----
-   ★円は丸いので、上の方ほど幅が狭い。1440pxでは円424px・カードの高さの位置で
-     幅332pxあり、310pxのカードが収まる。だが390pxでは円224px・その高さの幅は150pxしかなく、
-     168px幅のカードは左右にはみ出して円の輪郭を壊す（実測）。
-   ★そこで狭い幅では面の画像を落とし、円の輪郭に収まる幅まで縮める。 */
-@media (max-width: 760px) {
+/* ---- 円の上のカードの、狭い幅での扱い ----
+   ★皿が円の真上を通るかは幅で変わる（中央帯で皿が来る最上端・実測）:
+       1440px … y=592（円の上端205px。円のすぐ上はまるごと空き）
+        768px … y=75
+        390px … y=110
+     つまり狭い幅では「円のすぐ上」に皿が来る。そこへ置くと必ず重なるので、
+     1100px以下ではヒーローの上部（皿が来ない範囲）へ逃がす。 */
+@media (max-width: 1100px) {
+  .center-pickup {
+    top: clamp(22px, 3.2vw, 46px);
+    width: min(330px, 76vw);
+    transform: translateX(-50%);
+  }
+
+  .center-pickup:hover {
+    transform: translate(-50%, -2px);
+  }
+
   .center-pickup-note {
     display: none;
   }
 }
 
+/* ★390pxでは左の隅ラベル（y 18〜38）と重なるので、その下へ落とす。
+   このあたりは皿も来ない（中央帯で皿が来る最上端 y=110・実測）。 */
 @media (max-width: 560px) {
-  .center-pickup-face {
-    display: none;
-  }
-
   .center-pickup {
-    width: auto;
-    max-width: 146px;
-    align-self: center;
-    margin-bottom: 12px;
-  }
-
-  .center-pickup-body {
-    align-items: center;
-    padding: 9px 12px;  /* ★7pxだと高さ43pxで、タップ面の44pxに1px足りない（実測） */
-    text-align: center;
-  }
-
-  .center-pickup-title {
-    font-size: 12px;
+    top: 48px;
+    width: min(264px, 74vw);
   }
 }

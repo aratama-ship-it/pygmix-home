@@ -249,30 +249,32 @@ export default function OrbitHero() {
         })}
       </div>
 
+      {/* いま見てほしいものを一つだけ、円のすぐ上に置く。
+          SNSのリンク下見（Xのカード）と同じ形：面の画像＋題＋一行。
+          ★皿は円の真上の帯には入らない（1周52秒を260点測って0回・2026-09-06）。
+            だから円の外側の、この位置なら重ならない。 */}
+      <a
+        className="center-pickup"
+        href="https://stagesketch-try.juggler-arata.workers.dev/"
+        target="_blank"
+        rel="noreferrer"
+      >
+        <img
+          className="center-pickup-face"
+          src="/visuals/og-stagesketch.jpg"
+          alt=""
+          width={640}
+          height={336}
+        />
+        <span className="center-pickup-body">
+          <span className="center-pickup-label">PICKUP</span>
+          <span className="center-pickup-title">舞台スケッチ</span>
+          <span className="center-pickup-note">立ち位置と動線を、正面図と平面図で</span>
+        </span>
+      </a>
+
       <div className="center-menu">
         <p className="center-index">MIXING FIELD / CONTINUOUS</p>
-
-        {/* いま見てほしいものを一つだけ、ロゴのすぐ上に置く。
-            SNSのリンク下見（Xのカード）と同じ形：面の画像＋題＋一行＋出どころ。 */}
-        <a
-          className="center-pickup"
-          href="https://stagesketch-try.juggler-arata.workers.dev/"
-          target="_blank"
-          rel="noreferrer"
-        >
-          <img
-            className="center-pickup-face"
-            src="/visuals/og-stagesketch.jpg"
-            alt=""
-            width={640}
-            height={336}
-          />
-          <span className="center-pickup-body">
-            <span className="center-pickup-label">PICKUP</span>
-            <span className="center-pickup-title">舞台スケッチ</span>
-            <span className="center-pickup-note">立ち位置と動線を、正面図と平面図で</span>
-          </span>
-        </a>
 
         <h1 id="hero-title" aria-label="PYGMIX">
           <span>PYGMI</span>
