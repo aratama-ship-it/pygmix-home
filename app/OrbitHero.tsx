@@ -262,15 +262,11 @@ export default function OrbitHero() {
         <img
           className="center-pickup-face"
           src="/visuals/og-stagesketch.jpg"
-          alt=""
+          alt="舞台スケッチ — 舞台の立ち位置と動線を、客席からの正面図と真上の平面図で同時に描くツール"
           width={640}
           height={336}
         />
-        <span className="center-pickup-body">
-          <span className="center-pickup-label">PICKUP</span>
-          <span className="center-pickup-title">舞台スケッチ</span>
-          <span className="center-pickup-note">立ち位置と動線を、正面図と平面図で</span>
-        </span>
+        <span className="center-pickup-label">PICKUP</span>
       </a>
 
       <div className="center-menu">

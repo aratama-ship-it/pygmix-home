@@ -43,9 +43,12 @@ test("server-renders the PYGMIX home draft", async () => {
   assert.match(html, /class="center-pickup"/);
   assert.match(html, /center-pickup-face"[^>]*src="\/visuals\/og-stagesketch\.jpg"/);
   assert.match(html, /center-pickup-label">PICKUP</);
-  assert.match(html, /center-pickup-title">舞台スケッチ</);
   assert.equal([...html.matchAll(/class="center-pickup"/g)].length, 1, "PICKUPは1つだけ");
   assert.doesNotMatch(html, /orbit-pickup/);  // 最上段の帯は撤去した
+  /* ★カードは面の画像だけ。題も説明も画像の中にあるので、文字では繰り返さない。
+     そのぶん画像の alt に内容を持たせる（読み上げと画像が出ないときのため）。 */
+  assert.doesNotMatch(html, /center-pickup-title|center-pickup-note/);
+  assert.match(html, /alt="舞台スケッチ — 舞台の立ち位置と動線を[^"]*"/);
 
   /* 2026-09-06: 舞台スケッチを作品一覧へ追加。★ここへ足したら見出しの件数
      「LIVE PROJECTS / 01—NN」も直すこと（表示件数と食い違うため）。 */

@@ -1032,29 +1032,24 @@ a.collage-card:focus-visible {
   pointer-events: none;
 }
 
-/* ---- ロゴのすぐ上に置く「いま見てほしいもの」 ----
-   SNSのリンク下見（Xのカード）と同じ形にする：左に面の画像、右に題と一行。
-   ★円の中は詰まっている。中身の合計175px／内側の高さ278px（1440px時・実測）だったので、
-     このカードの分だけ円の直径を390→424pxへ広げてある。
-   ★タップ面は高さ44px以上（design-lint U1）。 */
+/* ---- 円のすぐ上に置く「いま見てほしいもの」 ----
+   ★面の画像に題も説明も入っているので、カードは画像だけにする（本人指示 2026-09-06
+     「右側の白い部分はいらない」）。PICKUP の札だけ画像の上へ小さく重ねる。
+   ★画像の高さ＝幅×336/640。置ける高さは幅ごとに違うので、下の狭い幅の指定を参照。
+   ★皿は円の真上には来ない（1440〜768pxで、幅320px以下なら円の上端まで空き・実測）。 */
 .center-pickup {
   position: absolute;
-  /* 円の上端（中心 calc(50% - 50px) から直径の半分ぶん上）より、さらに18px上に
-     カードの下端が来るように置く。translateY(-100%) で下端をこの位置に合わせる。 */
   top: calc(50% - 50px - clamp(310px, 29vw, 390px) / 2 - 18px);
   left: 50%;
   z-index: 14;
-  display: flex;
-  width: min(440px, 80vw);
-  min-height: 104px;  /* ★面の画像を読める大きさにする */
-  align-items: stretch;
+  display: block;
+  width: min(300px, 62vw);
   overflow: hidden;
-  transform: translate(-50%, -100%);
   border: 1px solid rgb(32 37 34 / 0.3);
   border-radius: 10px;
-  background: #fff;
-  color: var(--ink);
-  text-align: left;
+  background: #191512;
+  box-shadow: 0 10px 30px rgb(32 37 34 / 0.18);
+  transform: translate(-50%, -100%);
   transition: transform 180ms ease, border-color 180ms ease;
 }
 
@@ -1063,50 +1058,28 @@ a.collage-card:focus-visible {
   transform: translate(-50%, calc(-100% - 2px));
 }
 
-/* ★面の画像に「舞台スケッチ」の題が入っている。だから絵を大きく取り、文字は控える */
 .center-pickup-face {
-  width: 46%;
+  display: block;
+  width: 100%;
   height: auto;
-  flex: none;
-  align-self: stretch;
-  border-right: 1px solid rgb(32 37 34 / 0.18);
-  object-fit: cover;
 }
 
-.center-pickup-body {
-  display: flex;
-  min-width: 0;
-  flex-direction: column;
-  justify-content: center;
-  gap: 2px;
-  padding: 8px 11px;
-}
-
+/* 札は画像の上へ。面の左上には「STAGE IMAGE STUDY」があるので右上に置く。
+   ★暗い面の上なので、地を明るくして読ませる（コントラストは design-lint で実測）。 */
 .center-pickup-label {
-  /* ★0.62だと白地の上で 4.47:1 になり、4.5:1 に届かない（design-lint C1 実測）。
-     0.66 で 5.08:1。計算はコントラスト比の式で確かめた。 */
-  color: rgb(32 37 34 / 0.66);
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  padding: 4px 7px;
+  border-radius: 3px;
+  /* ★地は不透明にする。半透明だと背後が画像になり、コントラストを判定できない
+     （design-lint が WARN=判定不能 を出した）。不透明なら ink との比が確定する。 */
+  background: var(--paper-light);
+  color: var(--ink);
   font-family: var(--mono);
   font-size: 6px;
   font-weight: 500;
   letter-spacing: 0.18em;
-}
-
-.center-pickup-title {
-  font-size: 11px;
-  font-weight: 600;
-  letter-spacing: 0.01em;
-  line-height: 1.6;  /* ★1.3は基準（1.5〜2.0）を下回る・design-lint T1 */
-}
-
-.center-pickup-note {
-  overflow: hidden;
-  color: rgb(32 37 34 / 0.66);
-  font-size: 8px;
-  letter-spacing: 0.01em;
-  line-height: 1.6;
-  text-overflow: ellipsis;
-  white-space: nowrap;
 }
 
 .center-index {
@@ -4019,44 +3992,49 @@ a.collage-card:focus-visible {
 }
 
 /* ---- 円の上のカードの、狭い幅での扱い ----
-   ★皿が円の真上を通るかは幅で変わる（中央帯で皿が来る最上端・実測）:
-       1440px … y=592（円の上端205px。円のすぐ上はまるごと空き）
-        768px … y=75
-        390px … y=110
-     しかも空きの深さはカードの幅にもよる（幅が広いほど皿に早くぶつかる）。
-     そこで狭い幅ではヒーロー上部へ逃がしたうえ、カードも段階的に小さくする。
-     ★大きくするのは空きのある広い幅だけ。7幅で1周を通して実測して決めた。 */
+   ★幅ごとに「使える下端」を1周52秒・全皿で実測して決めた:
+       1440px … 円の上端205まで（幅420pxでも空き）
+       1100px … 円の上端240まで
+        768px … 幅320px以下なら円の上端194まで／360px以上だと y=75 で皿に当たる
+        390px … 幅によらず y=110 まで
+   ★画像だけのカードは高さ＝幅×0.525。幅を決めると高さが決まるので、
+     「その幅で置ける下端」に収まるところまで幅を詰める。 */
 @media (max-width: 1100px) {
   .center-pickup {
     top: clamp(22px, 3.2vw, 46px);
-    width: min(400px, 82vw);
-    min-height: 92px;
+    width: min(300px, 66vw);
     transform: translateX(-50%);
   }
 
   .center-pickup:hover {
     transform: translate(-50%, -2px);
   }
-
-  .center-pickup-note {
-    display: none;
-  }
 }
 
-/* 900px以下は、大きいままだと皿にぶつかる（768pxで209回・実測）ので従来の大きさへ */
-@media (max-width: 900px) {
+/* 1000px以下は円の位置が上がり、300px幅（高さ158px）だと円に重なる
+   （900pxで円の上端180px・実測）。幅を詰めて上へ寄せる。 */
+@media (max-width: 1000px) {
   .center-pickup {
-    width: min(330px, 80vw);
-    min-height: 0;
+    top: clamp(18px, 2.6vw, 40px);
+    width: min(264px, 60vw);
   }
 }
 
-/* ★390pxでは左の隅ラベル（y 18〜38）と重なるので、その下（y48〜）へ落とす。
-   ★面を46%に広げたぶんカードの高さが伸び（画像の高さ＝幅×336/640）、264px幅では
-     y113まで届いて皿に当たった（実測）。240pxまで詰めると高さ約59pxで収まる。 */
+/* ★560px以下は y=110 までしか使えず、左の隅ラベル（x18〜89 / y18〜38）も避ける。
+   幅160px（高さ約84px）で y20〜104。320pxでは 42vw で134pxまで縮み、
+   中央に置くと x93 から始まるので隅ラベルにも当たらない。 */
 @media (max-width: 560px) {
   .center-pickup {
-    top: 48px;
-    width: min(240px, 68vw);
+    top: 20px;
+    width: min(160px, 42vw);
+  }
+
+  /* カードが160pxまで縮むので、札も一緒に小さくする（そのままだと面を覆う） */
+  .center-pickup-label {
+    top: 5px;
+    right: 5px;
+    padding: 3px 5px;
+    font-size: 5px;
+    letter-spacing: 0.14em;
   }
 }
