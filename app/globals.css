@@ -963,9 +963,19 @@ a.collage-card:focus-visible {
 }
 
 /* ★そのアプリの絵を、大きくぼかして地色として敷く（本人指示 2026-09-07）。
-   ★濃さは文字が読めるかで決まる。絵が真っ黒でも紙色の上に 0.34 なら
-     ink との比が 5.9:1 で基準（4.5:1）を満たす。0.45 まで上げると 4.3:1 で落ちる（計算）。
-   inset を負にしているのは、ぼかした端が内側に出ないようにするため。 */
+   ★本人報告「背景の色がはみ出ている」（2026-09-07）。以前は inset:-22% で自分の箱より
+     大きく描き、.orbit-plate-icon の overflow:hidden で切り戻していた。Chromiumでの実測
+     （6倍拡大）では境界はきれいだったが、filter（blur）を掛けた要素を border-radius付きの
+     祖先（.orbit-card）でクリップする組み合わせは、ブラウザによって漏れることが知られている
+     （filterはクリップ前に別レイヤーへ描画されるため）。★箱を自分の外側へ広げるのをやめ、
+     inset:0（自分の内側にぴったり収める）にした。これなら「切り戻す」処理自体が要らないので、
+     どのブラウザでも漏れようがない。ぼかしの端がわずかに紙色へフェードするが、
+     .orbit-plate-icon の背景も同じ紙色なので違和感がない。
+   ★濃さ・鮮やかさ（本人指示「暗いアプリの地色をもっと鮮やかにする」2026-09-07）: 平均色が
+     黒に近いアプリ（JuggleLine・System Audio Analyzer）は saturate だけでは色が出ない
+     （彩度の低い暗い色は、彩度を何倍にしても増える彩度の絶対量が小さい・実測）。
+     brightness も併用して持ち上げる。opacity 0.34・saturate(2.4)・brightness(1.35) の組で、
+     5枚とも ink との比 6.5〜12.8:1（基準4.5:1に対し十分な余裕）を実測で確認。 */
 .orbit-plate-icon::before {
   position: absolute;
   z-index: 0;
@@ -973,8 +983,8 @@ a.collage-card:focus-visible {
   background-position: center;
   background-size: cover;
   content: "";
-  filter: blur(22px) saturate(1.35);
-  inset: -22%;
+  filter: blur(22px) saturate(2.4) brightness(1.35);
+  inset: 0;
   opacity: 0.34;
 }
 
