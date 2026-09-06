@@ -182,19 +182,6 @@ export default function OrbitHero() {
         ONE FOUNDATION
       </p>
 
-      {/* いま見てほしいものを一つだけ、最上段の中央に置く。
-          左右の隅のラベルと同じ高さに並べ、狭い幅では一段下げる。 */}
-      <a
-        className="orbit-pickup"
-        href="https://stagesketch-try.juggler-arata.workers.dev/"
-        target="_blank"
-        rel="noreferrer"
-      >
-        <span className="orbit-pickup-label">PICKUP</span>
-        <span className="orbit-pickup-title">舞台スケッチ</span>
-        <span className="orbit-pickup-note">立ち位置と動線を、正面図と平面図で</span>
-        <span className="orbit-pickup-arrow" aria-hidden="true">↗</span>
-      </a>
 
       <div className="orbit-rail" aria-hidden="true">
         <span />
@@ -264,6 +251,29 @@ export default function OrbitHero() {
 
       <div className="center-menu">
         <p className="center-index">MIXING FIELD / CONTINUOUS</p>
+
+        {/* いま見てほしいものを一つだけ、ロゴのすぐ上に置く。
+            SNSのリンク下見（Xのカード）と同じ形：面の画像＋題＋一行＋出どころ。 */}
+        <a
+          className="center-pickup"
+          href="https://stagesketch-try.juggler-arata.workers.dev/"
+          target="_blank"
+          rel="noreferrer"
+        >
+          <img
+            className="center-pickup-face"
+            src="/visuals/og-stagesketch.jpg"
+            alt=""
+            width={640}
+            height={336}
+          />
+          <span className="center-pickup-body">
+            <span className="center-pickup-label">PICKUP</span>
+            <span className="center-pickup-title">舞台スケッチ</span>
+            <span className="center-pickup-note">立ち位置と動線を、正面図と平面図で</span>
+          </span>
+        </a>
+
         <h1 id="hero-title" aria-label="PYGMIX">
           <span>PYGMI</span>
           <b>X</b>

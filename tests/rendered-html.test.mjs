@@ -37,13 +37,15 @@ test("server-renders the PYGMIX home draft", async () => {
   assert.equal([...html.matchAll(/class="orbit-item /g)].length, 11);
   assert.match(html, /\/visuals\/og-stagesketch\.jpg/);  // 舞台スケッチの皿の面
   assert.doesNotMatch(html, /ACTIVITY INDEX|ひとつじゃない。|でも、ばらばらでもない。/);
-  /* 2026-09-06: ヒーロー最上段の中央に「PICKUP」を1つ置く。
-     ★隅のラベルと同じ行に並ぶので、増やすなら幅を実測し直すこと
-       （説明込み396pxで620px幅から左の隅ラベルにぶつかる）。 */
-  assert.match(html, /class="orbit-pickup"/);
-  assert.match(html, /orbit-pickup-label">PICKUP</);
-  assert.match(html, /orbit-pickup-title">舞台スケッチ</);
-  assert.equal([...html.matchAll(/class="orbit-pickup"/g)].length, 1, "PICKUPは1つだけ");
+  /* 2026-09-06: 中央ロゴのすぐ上に「PICKUP」をSNSのカードの形で1つ置く。
+     ★円は丸いので上ほど幅が狭い。増やす・広げるときは円からのはみ出しを実測すること
+       （1440pxでは円424px・カードの高さで幅332px、390pxでは円224px・幅150px）。 */
+  assert.match(html, /class="center-pickup"/);
+  assert.match(html, /center-pickup-face"[^>]*src="\/visuals\/og-stagesketch\.jpg"/);
+  assert.match(html, /center-pickup-label">PICKUP</);
+  assert.match(html, /center-pickup-title">舞台スケッチ</);
+  assert.equal([...html.matchAll(/class="center-pickup"/g)].length, 1, "PICKUPは1つだけ");
+  assert.doesNotMatch(html, /orbit-pickup/);  // 最上段の帯は撤去した
 
   /* 2026-09-06: 舞台スケッチを作品一覧へ追加。★ここへ足したら見出しの件数
      「LIVE PROJECTS / 01—NN」も直すこと（表示件数と食い違うため）。 */

@@ -682,65 +682,6 @@ a.collage-card:focus-visible {
   text-align: right;
 }
 
-/* ---- 最上段の中央に置く「いま見てほしいもの」 ----
-   隅のラベルと同じ高さに並べる。★文字色は ink のまま（隅のラベルは 56% の薄さだが、
-   こちらは押せるリンクなので薄くしない）。★高さ44pxのタップ面を padding で確保する。 */
-.orbit-pickup {
-  position: absolute;
-  top: clamp(24px, 3.3vw, 48px);
-  left: 50%;
-  z-index: 16;
-  display: inline-flex;
-  align-items: center;
-  gap: 11px;
-  padding: 13px 20px;
-  transform: translateX(-50%);
-  border: 1px solid rgb(32 37 34 / 0.3);
-  border-radius: 999px;
-  background: rgb(250 248 242 / 0.88);
-  color: var(--ink);
-  white-space: nowrap;
-  transition: transform 180ms ease, background 180ms ease;
-}
-
-.orbit-pickup:hover {
-  background: var(--paper-light);
-  transform: translate(-50%, -2px);
-}
-
-.orbit-pickup-label {
-  font-family: var(--mono);
-  font-size: 7px;
-  font-weight: 500;
-  letter-spacing: 0.16em;
-}
-
-/* 見出しと中身のあいだに細い区切りを立てる */
-.orbit-pickup-label::after {
-  display: inline-block;
-  width: 1px;
-  height: 9px;
-  margin-left: 11px;
-  background: rgb(32 37 34 / 0.3);
-  content: "";
-  vertical-align: -1px;
-}
-
-.orbit-pickup-title {
-  font-size: 13px;
-  font-weight: 600;
-  letter-spacing: 0.02em;
-}
-
-.orbit-pickup-note {
-  font-size: 11px;
-  letter-spacing: 0.02em;
-}
-
-.orbit-pickup-arrow {
-  font-size: 11px;
-}
-
 .orbit-rail {
   position: absolute;
   top: 50%;
@@ -1066,7 +1007,7 @@ a.collage-card:focus-visible {
   left: 50%;
   z-index: 12;
   display: flex;
-  width: clamp(310px, 29vw, 390px);
+  width: clamp(268px, 31vw, 424px);  /* ★ロゴ上のカードの分だけ広げた（2026-09-06） */
   aspect-ratio: 1;
   flex-direction: column;
   align-items: center;
@@ -1089,6 +1030,75 @@ a.collage-card:focus-visible {
   border-radius: 50%;
   content: "";
   pointer-events: none;
+}
+
+/* ---- ロゴのすぐ上に置く「いま見てほしいもの」 ----
+   SNSのリンク下見（Xのカード）と同じ形にする：左に面の画像、右に題と一行。
+   ★円の中は詰まっている。中身の合計175px／内側の高さ278px（1440px時・実測）だったので、
+     このカードの分だけ円の直径を390→424pxへ広げてある。
+   ★タップ面は高さ44px以上（design-lint U1）。 */
+.center-pickup {
+  display: flex;
+  width: 100%;
+  align-items: stretch;
+  overflow: hidden;
+  margin: 0 0 16px;
+  border: 1px solid rgb(32 37 34 / 0.3);
+  border-radius: 10px;
+  background: #fff;
+  color: var(--ink);
+  text-align: left;
+  transition: transform 180ms ease, border-color 180ms ease;
+}
+
+.center-pickup:hover {
+  border-color: rgb(32 37 34 / 0.55);
+  transform: translateY(-2px);
+}
+
+.center-pickup-face {
+  width: 38%;
+  height: auto;
+  flex: none;
+  align-self: stretch;
+  border-right: 1px solid rgb(32 37 34 / 0.18);
+  object-fit: cover;
+}
+
+.center-pickup-body {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  justify-content: center;
+  gap: 2px;
+  padding: 8px 11px;
+}
+
+.center-pickup-label {
+  /* ★0.62だと白地の上で 4.47:1 になり、4.5:1 に届かない（design-lint C1 実測）。
+     0.66 で 5.08:1。計算はコントラスト比の式で確かめた。 */
+  color: rgb(32 37 34 / 0.66);
+  font-family: var(--mono);
+  font-size: 6px;
+  font-weight: 500;
+  letter-spacing: 0.18em;
+}
+
+.center-pickup-title {
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  line-height: 1.5;  /* ★1.3は基準（1.5〜2.0）を下回る・design-lint T1 */
+}
+
+.center-pickup-note {
+  overflow: hidden;
+  color: rgb(32 37 34 / 0.66);
+  font-size: 9px;
+  letter-spacing: 0.01em;
+  line-height: 1.5;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .center-index {
@@ -4000,21 +4010,36 @@ a.collage-card:focus-visible {
   }
 }
 
-/* ---- PICKUP の狭い幅での扱い ----
-   ★既存の @media (max-width: 560px) は2か所あるので、そこへ差し込まず独立して置く。
-   ★横幅は実測で決めた: 説明を含めた 396px のままだと、620px あたりで左の隅ラベルに
-     ぶつかる。760px で説明を落として約218pxに縮め、それでも足りない 390px では
-     同じ行を諦めて隅のラベルの下（左ラベルの下端38px〜コンベア上端155px の間）へ置く。 */
+/* ---- ロゴ上のカードの、狭い幅での扱い ----
+   ★円は丸いので、上の方ほど幅が狭い。1440pxでは円424px・カードの高さの位置で
+     幅332pxあり、310pxのカードが収まる。だが390pxでは円224px・その高さの幅は150pxしかなく、
+     168px幅のカードは左右にはみ出して円の輪郭を壊す（実測）。
+   ★そこで狭い幅では面の画像を落とし、円の輪郭に収まる幅まで縮める。 */
 @media (max-width: 760px) {
-  .orbit-pickup-note {
+  .center-pickup-note {
     display: none;
   }
 }
 
 @media (max-width: 560px) {
-  .orbit-pickup {
-    top: clamp(54px, 15vw, 66px);
-    gap: 9px;
-    padding: 12px 16px;
+  .center-pickup-face {
+    display: none;
+  }
+
+  .center-pickup {
+    width: auto;
+    max-width: 146px;
+    align-self: center;
+    margin-bottom: 12px;
+  }
+
+  .center-pickup-body {
+    align-items: center;
+    padding: 9px 12px;  /* ★7pxだと高さ43pxで、タップ面の44pxに1px足りない（実測） */
+    text-align: center;
+  }
+
+  .center-pickup-title {
+    font-size: 12px;
   }
 }
