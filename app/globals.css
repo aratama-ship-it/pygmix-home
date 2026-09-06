@@ -961,7 +961,8 @@ a.collage-card:focus-visible {
 .orbit-koubo img,
 .orbit-joseikin img,
 .orbit-venue img,
-.orbit-mesure img {
+.orbit-mesure img,
+.orbit-stagesketch img {
   object-position: center;
   filter: saturate(0.94);
 }

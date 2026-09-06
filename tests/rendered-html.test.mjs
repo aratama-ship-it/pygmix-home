@@ -31,10 +31,11 @@ test("server-renders the PYGMIX home draft", async () => {
   const html = await response.text();
   assert.match(html, /<title>PYGMIX｜真面目にふざける。<\/title>/i);
   assert.match(html, /CROSS-DISCIPLINARY.*CREATIVE STUDIO/);
-  assert.match(html, /TEN PLATES/);
+  assert.match(html, /ELEVEN PLATES/);  // ★皿を足したら枚数の表記も直す
   assert.match(html, />入口</);
   assert.match(html, />出口</);
-  assert.equal([...html.matchAll(/class="orbit-item /g)].length, 10);
+  assert.equal([...html.matchAll(/class="orbit-item /g)].length, 11);
+  assert.match(html, /\/visuals\/og-stagesketch\.jpg/);  // 舞台スケッチの皿の面
   assert.doesNotMatch(html, /ACTIVITY INDEX|ひとつじゃない。|でも、ばらばらでもない。/);
   /* 2026-09-06: ヒーロー最上段の中央に「PICKUP」を1つ置く。
      ★隅のラベルと同じ行に並ぶので、増やすなら幅を実測し直すこと

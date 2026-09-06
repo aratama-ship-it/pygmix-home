@@ -22,7 +22,9 @@ type OrbitItem = {
   delay: string;
 };
 
-/* 皿はLIVE PROJECTSの9件＋YouTubeの入門動画。52秒で1周するので5.2秒ずつずらす。
+/* 皿はLIVE PROJECTSの10件＋YouTubeの入門動画で11枚。52秒で1周するので
+   52/11 = 4.73秒ずつずらす。★皿を足したら全部の delay を割り直し、隅のラベル
+   （ELEVEN PLATES）とテストの枚数も一緒に直すこと。
    面の画像は各配信元から取り込んで640px/192pxに縮小した同梱コピー。皿は全部が初回表示に
    出るため遅延読み込みが効かず、配信元の原寸（合計6.36MB）を直接読むと初回表示が重くなる。 */
 const orbitItems: readonly OrbitItem[] = [
@@ -48,7 +50,7 @@ const orbitItems: readonly OrbitItem[] = [
     credit: "BETA",
     href: "https://juggling-trajectory-analyzer-54347579590.asia-northeast1.run.app/",
     external: true,
-    delay: "-5.2s",
+    delay: "-4.73s",
   },
   {
     id: "koubo",
@@ -60,7 +62,7 @@ const orbitItems: readonly OrbitItem[] = [
     credit: "koubo.art-monosashi.com",
     href: "https://koubo.art-monosashi.com/",
     external: true,
-    delay: "-10.4s",
+    delay: "-9.45s",
   },
   {
     id: "audio",
@@ -72,7 +74,7 @@ const orbitItems: readonly OrbitItem[] = [
     credit: "BETA / BUILD 28",
     href: "/system-audio-analyzer",
     external: false,
-    delay: "-15.6s",
+    delay: "-14.18s",
   },
   {
     id: "oto-no-memo",
@@ -84,7 +86,7 @@ const orbitItems: readonly OrbitItem[] = [
     credit: "VERSION 0.3.0",
     href: "/oto-no-memo",
     external: false,
-    delay: "-20.8s",
+    delay: "-18.91s",
   },
   {
     id: "joseikin",
@@ -96,7 +98,7 @@ const orbitItems: readonly OrbitItem[] = [
     credit: "joseikin.art-monosashi.com",
     href: "https://joseikin.art-monosashi.com/",
     external: true,
-    delay: "-26s",
+    delay: "-23.64s",
   },
   {
     id: "diabolo48",
@@ -108,7 +110,7 @@ const orbitItems: readonly OrbitItem[] = [
     credit: "制作中",
     href: "https://aratama-ship-it.github.io/diabolo4yeargame/",
     external: true,
-    delay: "-31.2s",
+    delay: "-28.36s",
   },
   {
     id: "fridge",
@@ -120,7 +122,7 @@ const orbitItems: readonly OrbitItem[] = [
     credit: "GITHUB PAGES",
     href: "https://aratama-ship-it.github.io/fridge-leftovers/",
     external: true,
-    delay: "-36.4s",
+    delay: "-33.09s",
   },
   {
     id: "venue",
@@ -132,7 +134,7 @@ const orbitItems: readonly OrbitItem[] = [
     credit: "venue.art-monosashi.com",
     href: "https://venue.art-monosashi.com/",
     external: true,
-    delay: "-41.6s",
+    delay: "-37.82s",
   },
   {
     id: "mesure",
@@ -144,7 +146,19 @@ const orbitItems: readonly OrbitItem[] = [
     credit: "mesure.art-monosashi.com",
     href: "https://mesure.art-monosashi.com/",
     external: true,
-    delay: "-46.8s",
+    delay: "-42.55s",
+  },
+  {
+    id: "stagesketch",
+    className: "orbit-stagesketch",
+    src: "/visuals/og-stagesketch.jpg",
+    alt: "舞台スケッチのカード",
+    category: "STAGE / IMAGE STUDY",
+    mix: "正面図 × 平面図",
+    credit: "stagesketch-try.juggler-arata.workers.dev",
+    href: "https://stagesketch-try.juggler-arata.workers.dev/",
+    external: true,
+    delay: "-47.27s",
   },
 ];
 
@@ -163,7 +177,7 @@ export default function OrbitHero() {
         CREATIVE STUDIO
       </p>
       <p className="orbit-corner orbit-corner-right">
-        TEN PLATES
+        ELEVEN PLATES
         <br />
         ONE FOUNDATION
       </p>
