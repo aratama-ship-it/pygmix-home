@@ -1,0 +1,141 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>pygmix.com ヒーロー見直し — 参照ブリーフと方向の提案（判断用・2026-09-06）</title>
+<style>
+:root{ --bg:#f5f1e8; --ink:#241f1a; --soft:#6b5f50; --line:#d9d0bf; --accent:#a84b26; --ok:#4d5d3f; }
+*{box-sizing:border-box}
+body{ margin:0; background:var(--bg); color:var(--ink); font-family:"Hiragino Kaku Gothic ProN","Hiragino Sans","Yu Gothic","Noto Sans JP",sans-serif; font-size:15px; line-height:1.85; }
+a{ color:var(--accent); }
+.doc{ max-width:980px; margin:0 auto; padding:32px 20px 90px; }
+h1{ font-family:"Hiragino Mincho ProN","Yu Mincho",serif; font-size:26px; line-height:1.4; margin:0 0 8px; }
+h2{ font-family:"Hiragino Mincho ProN","Yu Mincho",serif; font-size:20px; margin:46px 0 10px; padding-left:12px; border-left:3px solid var(--accent); }
+h3{ font-size:15px; margin:24px 0 4px; }
+.meta{ color:var(--soft); font-size:13px; }
+.ask{ background:#fff; border:1px solid var(--line); border-left:4px solid var(--accent); padding:16px 20px; margin:20px 0; }
+.ask strong{ display:block; font-size:16px; margin-bottom:6px; }
+table{ border-collapse:collapse; width:100%; font-size:14px; margin:12px 0; background:#fff; }
+th,td{ border:1px solid var(--line); padding:8px 10px; vertical-align:top; text-align:left; }
+th{ background:#ece5d6; font-weight:600; }
+.tag{ display:inline-block; font-size:11px; letter-spacing:.08em; padding:2px 8px; border-radius:3px; border:1px solid var(--line); color:var(--soft); }
+.tag.fact{ border-color:#7a8b6a; color:var(--ok); }
+.tag.interp{ border-color:#7a6f9a; color:#4c4370; }
+.tag.ng{ border-color:var(--accent); color:var(--accent); }
+code{ font-family:inherit; font-size:13px; letter-spacing:.02em; background:#ece5d6; padding:2px 6px; border-radius:3px; }
+.ref{ background:#fff; border:1px solid var(--line); padding:14px 18px; margin:14px 0; }
+.ref h3{ margin:0 0 2px; }
+.ref .url{ font-size:12px; word-break:break-all; }
+/* 参照のリンクは押す前提。44pxのタップ面を持たせる（design-lint U1・実測12px） */
+.ref .url a{ display:inline-block; padding-block:16px; }
+.chain{ background:#fff7f2; border:1px solid #e8c9b8; padding:14px 18px; margin:14px 0; font-size:14px; }
+ul{ margin:6px 0 0; padding-left:1.2em; } li{ margin:3px 0; }
+.note{ font-size:13px; color:var(--soft); }
+.sketch{ background:#fff; border:1px solid var(--line); padding:16px; margin:14px 0; }
+.zone{ border:1px dashed var(--line); padding:10px 12px; margin:6px 0; font-size:13px; }
+.zone b{ font-size:14px; }
+</style>
+</head>
+<body>
+<div class="doc">
+
+<h1>pygmix.com ヒーロー見直し — 参照ブリーフと方向の提案</h1>
+<p class="meta">2026-09-06 作成／きっかけ: 「舞台スケッチをこの倍くらいまで大きくしたい。そろそろそもそものデザインの見直しも必要かもしれません」</p>
+
+<div class="ask">
+  <strong>判断してほしいこと</strong>
+  下の「提案する方向」で進めてよいか。良ければ実装に入ります。
+  別の方向がよければ、どこが引っかかるかを教えてください。
+</div>
+
+<h2>1. なぜ見直しが要るか（実測）</h2>
+<p>「倍」＝約 <code>640×336px</code>。1440×900 のヒーローに、その大きさが入る場所は<strong>ありません</strong>。</p>
+<table>
+  <tr><th style="width:30%">置き場所の候補</th><th>結果 <span class="tag fact">実測</span></th></tr>
+  <tr><td>円の上・中央</td><td>画面外（y −145〜191）</td></tr>
+  <tr><td>円の下・中央</td><td>画面外＋流れる皿と208回衝突</td></tr>
+  <tr><td>左半分／右半分／中央</td><td>中央の円と重なる＋皿と208回衝突</td></tr>
+</table>
+<p class="note">円が y205〜595（390px）を占め、その周りを皿が回っているため。1.5倍（500×262）でも円の上には入りません（空きは185px）。<strong>置き場所の調整では解けない＝構成の問題</strong>です。</p>
+
+<h3>ついでに見つかった不具合</h3>
+<ul>
+  <li><span class="tag ng">不具合</span> ヒーローの <code>WORKS</code> の飛び先 <code>#activities</code> が<strong>存在しません</strong>。押しても何も起きません。</li>
+  <li><span class="tag ng">不足</span> 自動で回るコンテンツに <code>aria-live</code> の指定がありません（下の参照3を参照）。</li>
+  <li><span class="tag fact">実測</span> 皿の画像は初回表示で全部読みます（<code>public/visuals/</code> 計 1.1MB）。遅延読み込みが効かない構造です。</li>
+</ul>
+
+<h2>2. 参照（実際に開いて確認したもの）</h2>
+
+<div class="ref">
+  <h3>① 東京芸術劇場 — 催しが多い場所が、トップで何を先に出すか</h3>
+  <p class="url"><a href="https://www.geigeki.jp/">https://www.geigeki.jp/</a>（2026-09-06 確認）</p>
+  <p><span class="tag fact">確認した事実</span> トップの最上段が「<strong>公演・イベント Pick up</strong>」（画像付き6件）。次が「本日の催し」、その後に利用案内、ジャーナル、施設紹介。<strong>装飾的なキャッチコピーは無し</strong>。</p>
+  <p><strong>採る</strong>: 催しが多い場所ほど、トップの一番上は「いま見てほしいもの」に使われている。文言は機能的（何が・いつ）。<br>
+  <strong>採らない</strong>: 6件並べる形。pygmixは「いま1つを大きく」が目的なので、件数を増やすと目的に反する。</p>
+</div>
+
+<div class="ref">
+  <h3>② Panic — 製品を多く持つ工房が、1つを押すときの順番</h3>
+  <p class="url"><a href="https://panic.com/">https://panic.com/</a>（2026-09-06 確認）</p>
+  <p><span class="tag fact">確認した事実</span> ヒーローは社名＋具体的な一行「We code apps, publish games, and make Playdate.」。その直後に<strong>1つだけの新着（Prompt 3.5）</strong>。そのあとに事業区分ごとの製品一覧。</p>
+  <p><strong>採る</strong>: <strong>「素性を一行で言う → いま推す1つ → 全体の目録」</strong>という順番。押しの1つは<strong>独立した帯</strong>を持ち、素性の領域に押し込まれていない。<br>
+  <strong>採らない</strong>: 製品を均等に並べる姿勢。pygmixは今回「1つを大きく」が要件。</p>
+</div>
+
+<div class="ref">
+  <h3>③ W3C ARIA Authoring Practices — 自動で回るコンテンツの要件</h3>
+  <p class="url"><a href="https://www.w3.org/WAI/ARIA/apg/patterns/carousel/">https://www.w3.org/WAI/ARIA/apg/patterns/carousel/</a>（2026-09-06 確認）</p>
+  <p><span class="tag fact">確認した事実</span> 自動回転するなら「停止・再開ボタン」が必須。キーボードのフォーカスが入ったら止まる。マウスが乗っている間は止まる。回転中は <code>aria-live="off"</code>、止まっているときは <code>polite</code>。</p>
+  <p><span class="tag fact">現状の実測</span> 停止ボタン ✔（「コンベアを止める」）／ホバーで停止 ✔／フォーカスで停止 ✔（実際に <code>paused</code> になることを確認）／皿11枚すべてキーボード到達可 ✔／<strong><code>aria-live</code> のみ未指定</strong>。</p>
+  <p><strong>採る</strong>: いまの作りは要件をほぼ満たしている。<strong>コンベアは残してよい</strong>という判断の根拠になる。足りない <code>aria-live</code> だけ足す。</p>
+</div>
+
+<p class="note">参照は分析のためのもので、レイアウトや文言をそのまま持ち込むことはしません。①②はページ内容の並び順を実際に読んで確認した事実、③は仕様書の記述です。</p>
+
+<h2>3. 提案する方向</h2>
+
+<div class="chain">
+  <strong>理由の連鎖</strong><br>
+  初見の人は「これは誰で、何がある場所か」を数秒で知りたい（利用者と場面）
+  → 素性は一行で伝わればよく、画面の全部を使う必要はない（要件）
+  → 芸劇もPanicも、トップの上段は「いま見てほしいもの」に使い、押しの1つは独立した帯を持っていた（参照の根拠）
+  → <strong>素性の領域を縦に詰め、その下にPICKUPの帯を作る</strong>（採る原則）
+  → コンベアと円は残す。pygmix固有の核であり、W3Cの要件も満たしているため（実装）
+</div>
+
+<div class="sketch">
+  <div class="zone"><b>① 素性の帯（いまのヒーローを縦に詰める）</b><br>
+  PYGMIXの円＋コンベア＋門。高さ 100vh → <strong>約62vh</strong>。円とレールは比率のまま縮む。<br>
+  <span class="note">1440×900 で 558px。レール（504px）が収まる下限。</span></div>
+  <div class="zone"><b>② PICKUP の帯（新設）</b><br>
+  全幅。<strong>640×336</strong> の面の画像＋機能的な一行＋行き先。高さ 約38vh（1440×900 で342px）。<br>
+  <span class="note">スマホ390pxでは 351×184。いまの148pxの<strong>約2.4倍</strong>。</span></div>
+  <div class="zone"><b>③ ライブラリ（いまのまま）</b><br>
+  作品一覧。<code>WORKS</code> の飛び先が無い問題は、ここへ繋ぐか、区分を作って解消する。</div>
+</div>
+
+<h3>あわせて直すこと</h3>
+<ul>
+  <li><code>WORKS</code> の飛び先（いま <code>#activities</code> で存在しない）</li>
+  <li>自動回転に <code>aria-live</code> を指定（回転中 <code>off</code>／停止中 <code>polite</code>）</li>
+  <li>ヒーローが短くなるぶん、初回に読む画像の量を見直す余地が出る（現状1.1MB）</li>
+</ul>
+
+<h3>変えないこと</h3>
+<ul>
+  <li>回転寿司の比喩（皿・コンベア・入口/出口の門）＝pygmix固有の核</li>
+  <li>配色・書体・極小モノスペースの札・対角だけ極端な角丸</li>
+  <li>「真面目に、ふざける。」とPYGMIXのロゴ</li>
+</ul>
+
+<h2>4. 気になる点（先に言っておきます）</h2>
+<ul>
+  <li><strong>ヒーローが全画面でなくなります。</strong>コンベアの見える面積が減り、没入感は下がります。これが受け入れられないなら、②を「1画面目の下」に置く（スクロールが要る）案に切り替えます。</li>
+  <li>640×336 は<strong>いまのOGカード画像の原寸</strong>です。これ以上大きくすると画像が粗くなるので、拡大するなら元画像を作り直す必要があります。</li>
+</ul>
+
+</div>
+</body>
+</html>

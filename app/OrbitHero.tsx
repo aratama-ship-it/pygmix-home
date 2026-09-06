@@ -204,7 +204,9 @@ export default function OrbitHero() {
 
       <div
         className="orbit-items"
-        aria-label="入口から出口へ流れるPYGMIXの10のプロジェクト"
+        aria-label="入口から出口へ流れるPYGMIXの11のプロジェクト"
+        aria-live={paused ? "polite" : "off"}
+        aria-atomic="false"
       >
         {orbitItems.map((item) => {
           const visual = (
@@ -249,26 +251,6 @@ export default function OrbitHero() {
         })}
       </div>
 
-      {/* いま見てほしいものを一つだけ、円のすぐ上に置く。
-          SNSのリンク下見（Xのカード）と同じ形：面の画像＋題＋一行。
-          ★皿は円の真上の帯には入らない（1周52秒を260点測って0回・2026-09-06）。
-            だから円の外側の、この位置なら重ならない。 */}
-      <a
-        className="center-pickup"
-        href="https://stagesketch-try.juggler-arata.workers.dev/"
-        target="_blank"
-        rel="noreferrer"
-      >
-        <img
-          className="center-pickup-face"
-          src="/visuals/og-stagesketch.jpg"
-          alt="舞台スケッチ — 舞台の立ち位置と動線を、客席からの正面図と真上の平面図で同時に描くツール"
-          width={640}
-          height={336}
-        />
-        <span className="center-pickup-label">PICKUP</span>
-      </a>
-
       <div className="center-menu">
         <p className="center-index">MIXING FIELD / CONTINUOUS</p>
 
@@ -281,7 +263,9 @@ export default function OrbitHero() {
         </p>
 
         <nav aria-label="メインナビゲーション">
-          <a href="#activities">WORKS</a>
+          {/* ★WORKSの飛び先 #activities はそもそも存在しなかった（押しても何も起きない）。
+              WORKSは新設のPICKUPへ、PROJECTSは全一覧へ、それぞれ別の行き先を持たせる。 */}
+          <a href="#pickup">WORKS</a>
           <a href="#projects">PROJECTS</a>
           <a href="/contact">CONTACT</a>
         </nav>

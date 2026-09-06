@@ -122,6 +122,41 @@ export default function Home() {
     <main id="top">
       <OrbitHero />
 
+      {/* 本人指示 2026-09-06「舞台スケッチをこの倍くらいまで大きくしたい。
+          そろそろそもそものデザインの見直しも必要かもしれません」。
+          識別のヒーロー（円・コンベア）を縦に詰め、いま推す1つをここへ専用セクションとして
+          切り出した（参照ブリーフ: docs/2026-09-06_hero-redesign-brief）。
+          ★流れる皿でも中央の円でもないので、640×336の実寸に近い大きさで出せる。 */}
+      <section className="pickup" id="pickup" aria-labelledby="pickup-title">
+        <div className="pickup-heading">
+          <p>PICKUP</p>
+          <h2 id="pickup-title">舞台スケッチ</h2>
+        </div>
+        <a
+          className="pickup-card"
+          href="https://stagesketch-try.juggler-arata.workers.dev/"
+          target="_blank"
+          rel="noreferrer"
+        >
+          <img
+            className="pickup-face"
+            src="/visuals/og-stagesketch.jpg"
+            alt="舞台スケッチ — 舞台の立ち位置と動線を、客席からの正面図と真上の平面図で同時に描くツール"
+            width={640}
+            height={336}
+          />
+          {/* ★<a>は透過的な内容モデルでblock要素を含められるが、<span>にp要素を
+              入れるのは無効。copyはdivにする（project-card-copyと同じ考え方）。 */}
+          <div className="pickup-copy">
+            <p className="pickup-category">STAGE / IMAGE STUDY</p>
+            <p className="pickup-note">
+              舞台の立ち位置と動線を、客席からの正面図と真上の平面図で同時に描く。体験版は登録不要。
+            </p>
+            <span className="pickup-action">体験版を使ってみる ↗</span>
+          </div>
+        </a>
+      </section>
+
       <section className="projects" id="projects" aria-labelledby="projects-title">
         <div className="projects-heading">
           <p>LIVE PROJECTS / 01—10</p>

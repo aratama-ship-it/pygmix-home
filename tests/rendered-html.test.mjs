@@ -37,18 +37,32 @@ test("server-renders the PYGMIX home draft", async () => {
   assert.equal([...html.matchAll(/class="orbit-item /g)].length, 11);
   assert.match(html, /\/visuals\/og-stagesketch\.jpg/);  // 舞台スケッチの皿の面
   assert.doesNotMatch(html, /ACTIVITY INDEX|ひとつじゃない。|でも、ばらばらでもない。/);
-  /* 2026-09-06: 中央ロゴのすぐ上に「PICKUP」をSNSのカードの形で1つ置く。
-     ★円は丸いので上ほど幅が狭い。増やす・広げるときは円からのはみ出しを実測すること
-       （1440pxでは円424px・カードの高さで幅332px、390pxでは円224px・幅150px）。 */
-  assert.match(html, /class="center-pickup"/);
-  assert.match(html, /center-pickup-face"[^>]*src="\/visuals\/og-stagesketch\.jpg"/);
-  assert.match(html, /center-pickup-label">PICKUP</);
-  assert.equal([...html.matchAll(/class="center-pickup"/g)].length, 1, "PICKUPは1つだけ");
-  assert.doesNotMatch(html, /orbit-pickup/);  // 最上段の帯は撤去した
-  /* ★カードは面の画像だけ。題も説明も画像の中にあるので、文字では繰り返さない。
-     そのぶん画像の alt に内容を持たせる（読み上げと画像が出ないときのため）。 */
-  assert.doesNotMatch(html, /center-pickup-title|center-pickup-note/);
+  /* 2026-09-06: ヒーロー見直し。本人指示「舞台スケッチをこの倍くらいまで大きくしたい。
+     そろそろそもそものデザインの見直しも必要かもしれません」。参照ブリーフ
+     （docs/2026-09-06_hero-redesign-brief）を踏まえ、識別の帯（円・コンベア）を
+     縦に約62%へ詰め、PICKUPを流れる皿から独立させた専用セクション（.pickup）にした。
+     ★流れる皿・中央の円と衝突しないので、640×336の実寸に近い大きさで置ける。 */
+  assert.doesNotMatch(html, /center-pickup/);  // 円に埋め込む旧版は撤去した
+  assert.match(html, /class="pickup"/);
+  assert.match(html, /id="pickup"/);
+  assert.match(html, /class="pickup-card"/);
+  assert.match(html, /pickup-face"[^>]*src="\/visuals\/og-stagesketch\.jpg"[^>]*width="640"[^>]*height="336"/);
   assert.match(html, /alt="舞台スケッチ — 舞台の立ち位置と動線を[^"]*"/);
+  assert.match(html, /<p>PICKUP<\/p>/);
+  assert.equal([...html.matchAll(/class="pickup-card"/g)].length, 1, "PICKUPは1つだけ");
+
+  /* あわせて見つけた不具合を直した:
+     ① WORKSの飛び先 #activities が存在しなかった（押しても何も起きない）。
+        WORKSは新設のPICKUPへ、PROJECTSは全一覧へ、別々の行き先にした。
+     ② 自動回転するコンベアに aria-live が無かった（W3C ARIA APG カルーセルの要件）。
+        回転中はoff、コンベアを止めるとpoliteにする。
+     ③ 皿を11枚にした際、aria-labelの人数表記が「10」のまま直っていなかった。 */
+  assert.doesNotMatch(html, /href="#activities"/);
+  assert.match(html, /href="#pickup">WORKS<\/a>/);
+  assert.match(html, /href="#projects">PROJECTS<\/a>/);
+  assert.match(html, /aria-live="off"/);
+  assert.match(html, /aria-atomic="false"/);
+  assert.match(html, /入口から出口へ流れるPYGMIXの11のプロジェクト/);
 
   /* 2026-09-06: 舞台スケッチを作品一覧へ追加。★ここへ足したら見出しの件数
      「LIVE PROJECTS / 01—NN」も直すこと（表示件数と食い違うため）。 */

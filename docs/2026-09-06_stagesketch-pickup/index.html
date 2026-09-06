@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>pygmix.com — 舞台スケッチの導線を足す（公開前の確認・2026-09-06）</title>
+<style>
+:root{ --bg:#f5f1e8; --ink:#241f1a; --soft:#6b5f50; --line:#d9d0bf; --accent:#a84b26; --ok:#4d5d3f; }
+*{box-sizing:border-box}
+body{ margin:0; background:var(--bg); color:var(--ink); font-family:"Hiragino Kaku Gothic ProN","Hiragino Sans","Yu Gothic","Noto Sans JP",sans-serif; font-size:15px; line-height:1.8; }
+a{ color:var(--accent); }
+.doc{ max-width:1180px; margin:0 auto; padding:32px 20px 80px; }
+h1{ font-family:"Hiragino Mincho ProN","Yu Mincho",serif; font-size:26px; line-height:1.4; margin:0 0 8px; }
+h2{ font-family:"Hiragino Mincho ProN","Yu Mincho",serif; font-size:20px; margin:46px 0 6px; padding-left:12px; border-left:3px solid var(--accent); }
+h3{ font-size:15px; margin:22px 0 6px; color:var(--soft); font-weight:600; }
+.meta{ color:var(--soft); font-size:13px; }
+.ask{ background:#fff; border:1px solid var(--line); border-left:4px solid var(--accent); padding:16px 20px; margin:20px 0; }
+.ask strong{ display:block; font-size:16px; margin-bottom:6px; }
+table{ border-collapse:collapse; width:100%; font-size:14px; margin:12px 0; background:#fff; }
+th,td{ border:1px solid var(--line); padding:8px 10px; vertical-align:top; text-align:left; }
+th{ background:#ece5d6; font-weight:600; }
+.tag{ display:inline-block; font-size:11px; letter-spacing:.08em; padding:2px 8px; border-radius:3px; border:1px solid var(--line); color:var(--soft); }
+.tag.new{ border-color:var(--accent); color:var(--accent); }
+.tag.same{ background:#e8efe0; border-color:#7a8b6a; color:var(--ok); }
+code{ font-family:inherit; font-size:13px; letter-spacing:.02em; background:#ece5d6; padding:2px 6px; border-radius:3px; }
+figure{ margin:0 0 18px; }
+figcaption{ font-size:13px; color:var(--soft); margin:6px 0 0; }
+img{ display:block; width:100%; height:auto; border:1px solid var(--line); background:#fff; }
+.pair{ display:grid; grid-template-columns:1fr 1fr; gap:18px; align-items:start; }
+.pair.sp{ grid-template-columns:1fr 1fr; max-width:760px; }
+@media (max-width:880px){ .pair, .pair.sp{ grid-template-columns:1fr; } }
+.lbl{ display:inline-block; font-size:12px; letter-spacing:.06em; color:var(--soft); margin-bottom:4px; }
+.note{ font-size:13px; color:var(--soft); }
+ul{ margin:8px 0 0; padding-left:1.2em; }
+li{ margin:4px 0; }
+</style>
+</head>
+<body>
+<div class="doc">
+
+<h1>pygmix.com に舞台スケッチの導線を足す</h1>
+<p class="meta">公開前の確認用／2026-09-06 作成／左＝いまの本番、右＝公開するとこうなる</p>
+
+<div class="ask" style="border-left-color:#7a6f9a">
+  <strong>★この検討は後に見直しへ発展した（この案の採否は確定していない）</strong>
+  ここでの「中央ロゴの上にカードを置く」案は本人確認後いったん公開判断まで進んだが、
+  「もう少し大きく」を重ねた末に「そろそろそもそものデザインの見直しも必要かもしれません」
+  という判断になり、識別のヒーローを縦に詰めてPICKUPを独立セクション化する見直しへ発展した。
+  最終的な採否は <code>docs/2026-09-06_hero-redesign-brief/index.html</code> を見ること。
+  このページは、そこへ至る検討過程の記録として残す。
+</div>
+
+<div class="ask">
+  <strong>見ていただきたいこと</strong>
+  この3つの変更を公開してよいか。気になる点があれば、公開前に直します。
+  デプロイはこのリポジトリから実行できないため、公開はご本人の操作になります。
+</div>
+
+<h2>① 中央の円のすぐ上に「PICKUP」<span class="tag new">新規</span></h2>
+<p><strong>カードは面の画像だけ</strong>にしました。題も説明も画像の中に入っているので、文字では繰り返しません（右の白い欄は撤去）。<code>PICKUP</code> の札だけ画像の右上へ小さく重ねています。円の外側・真上に置き、円の大きさは元のまま触っていません。</p>
+<p class="note">★<strong>大きさと置き場所は幅ごとに実測して決めました。</strong>画像だけのカードは高さ＝幅×0.525と背が高く、皿（流れているカード）や円とぶつかりやすいためです。1周52秒を通して各幅で「使える下端」を測ると、1440pxは円の上端205pxまで空き、768pxは幅320px以下なら円の上端194pxまで、390pxは幅によらず y=110 まででした。</p>
+<p class="note">★<strong>大きさは画面の高さにも連動します。</strong>円の上の空きは画面の高さで変わるため、<code>50vh</code> から円の位置を引いて空きを求め、画像の比（640×336）から幅を計算しています（上限380px）。1440×900では326px、1440×1080では380pxまで伸びます。</p>
+<p class="note">1440×900 / 1440×1080 / 1920×1080 / 1366×768 / 1280 / 1100 / 1000 / 950 / 900 / 860 / 820 / 768 / 600 / 560 / 430 / 390 / 375 / 360 / 320px の<strong>19通り</strong>で、皿・隅のラベル・中央の円のいずれとも重ならず、画面内に収まることを実測しました。
+
+<h3>PC（1440px）</h3>
+<div class="pair">
+  <figure><span class="lbl">いまの本番</span><img src="shots/before-hero-pc.png" alt="変更前のヒーロー最上部（PC）"></figure>
+  <figure><span class="lbl">公開後</span><img src="shots/after-hero-pc.png" alt="変更後のヒーロー最上部（PC）。中央にPICKUPの帯"></figure>
+</div>
+
+<h3>スマホ（390px）</h3>
+<div class="pair sp">
+  <figure><span class="lbl">いまの本番</span><img src="shots/before-hero-sp.png" alt="変更前のヒーロー最上部（スマホ）"></figure>
+  <figure><span class="lbl">公開後</span><img src="shots/after-hero-sp.png" alt="変更後のヒーロー最上部（スマホ）。隅のラベルの下にPICKUP"></figure>
+</div>
+<p class="note">★<strong>置き場所は画面幅で変えています。</strong>円のすぐ上を皿（流れているカード）が通るかは幅によって違い、中央帯で皿が来る最上端を実測すると 1440px は y=592（円の上端205pxより下＝円の上はまるごと空き）、768px は y=75、390px は y=110 でした。つまり狭い幅では「円のすぐ上」に皿が来るので、1100px以下ではヒーロー上部の空いている位置へ逃がしています。</p>
+<p class="note">1440 / 1100 / 768 / 560 / 430 / 390 / 360px の<strong>7幅</strong>で、1周52秒を通して皿とも隅のラベルとも重ならないことを実測しました。タップ面は54〜73px（基準44px以上）。</p>
+
+<h2>② ヒーローのデッキに舞台スケッチの皿<span class="tag new">新規</span></h2>
+<p>流れているカード（皿）に1枚足しました。面は舞台スケッチのOGカードを他の皿と同じ640×336へ縮めた同梱コピーです。<strong>皿が10枚→11枚になったので、右上の表記も <code>TEN PLATES</code> → <code>ELEVEN PLATES</code> に変えています。</strong>周回は52秒のままで、11枚を等間隔（4.73秒ずつ）に割り直しました。</p>
+<div class="pair">
+  <figure><span class="lbl">いまの本番（10枚）</span><img src="shots/before-deck-pc.png" alt="変更前のヒーロー全体"></figure>
+  <figure><span class="lbl">公開後（11枚）</span><img src="shots/after-deck-pc.png" alt="変更後のヒーロー全体。左下に舞台スケッチの皿"></figure>
+</div>
+<p class="note">右の画像は、舞台スケッチの皿が見える時刻でコンベアを止めて撮っています（左下）。暗い面なので既存の明るい皿の中で目立ちますが、<code>会場ものさし</code>も暗い面なので浮いてはいません。</p>
+
+<h2>③ 作品一覧の先頭に「舞台スケッチ」<span class="tag new">新規</span></h2>
+<p>P-05として全幅カードを追加。地色はリンク先のアプリと同じ舞台の暗色にして、開く前と後をつないでいます。図像は「上＝客席から見た正面図（足元に明かりの溜まり）／下＝真上から見た平面図（舞台の中心線）」です。</p>
+
+<h3>PC（1440px）</h3>
+<div class="pair">
+  <figure><span class="lbl">いまの本番</span><img src="shots/before-lib-pc.png" alt="変更前の作品一覧（PC）"></figure>
+  <figure><span class="lbl">公開後</span><img src="shots/after-lib-pc.png" alt="変更後の作品一覧（PC）。先頭に舞台スケッチの全幅カード"></figure>
+</div>
+
+<h3>スマホ（390px）</h3>
+<div class="pair sp">
+  <figure><span class="lbl">いまの本番</span><img src="shots/before-lib-sp.png" alt="変更前の作品一覧（スマホ）"></figure>
+  <figure><span class="lbl">公開後</span><img src="shots/after-lib-sp.png" alt="変更後の作品一覧（スマホ）。先頭に舞台スケッチのカード"></figure>
+</div>
+<p class="note">スマホでは図像を消しています。狭いカードでは本文と「体験版を使ってみる」の行に必ず重なるためです（実測）。</p>
+
+<h2>実測した結果</h2>
+<table>
+  <tr><th style="width:34%">確認したこと</th><th>結果</th></tr>
+  <tr><td>グリッドの埋まり方</td><td>この一覧は span の合計が16＝4行ちょうどで埋まる設計でした（<code>音のメモ</code>が全幅）。最初 span 2 で入れたら <code>System Audio Analyzer</code> が1枚だけ取り残された行ができたため、<strong>全幅にして20＝5行ちょうど</strong>に戻しています</td></tr>
+  <tr><td>PICKUP の重なり（5幅）</td><td>1440 / 760 / 620 / 560 / 390px すべてで、画面内に収まり隅のラベルともコンベアとも<strong>重なりなし</strong></td></tr>
+  <tr><td>タップ面</td><td>PICKUP は46〜48px（基準44px以上）</td></tr>
+  <tr><td>design-lint</td><td>変更前 NG109/WARN11 ／ 変更後 <strong>NG113/WARN14</strong>。<br>
+  <strong>増えた分は、皿1枚ぶんの既存の指摘です。</strong>皿の説明文（分類・掛け合わせ・出どころ）の行送りと、出どころの文字色のコントラストは、<strong>既存11皿すべてが同じ指摘を受けています</strong>（<code>KITCHEN / TOOL</code> <code>OPEN CALLS</code> なども各2件）。新種の問題は増えていません。<br>
+  PICKUPのカードは、最初 <code>PICKUP</code> の札のコントラストが 4.47:1（基準4.5:1）、題の行送りが1.3（基準1.5〜2.0）で4件の指摘が出たので、<strong>公開前に直しました</strong>（札の不透明度を0.62→0.66＝5.08:1、行送りを1.5へ）。いまカード由来の指摘は0件です。<br>
+  WARNは「動いている要素どうしが重なって判定できない」もので、<code>入口</code> <code>出口</code> など<strong>既存の要素だけ</strong>です（本番10枚版も14件）。</td></tr>
+  <tr><td>テスト</td><td><code>npm test</code> 7件全通過（PICKUPの存在・行き先・カード10枚・件数表記を検査に追加）</td></tr>
+</table>
+<p class="note">design-lint の109件は、このページに<strong>元からある</strong>指摘です（コントラスト52・行送り54・タップ対象14）。今回の範囲外なので触っていません。直すかどうかは別途ご相談させてください。</p>
+
+<h2>気になれば直せるところ</h2>
+<ul>
+  <li>PICKUP の文言（いまは「PICKUP／舞台スケッチ／立ち位置と動線を、正面図と平面図で」）</li>
+  <li>カードの並び順（いまは先頭。JuggleLine の後ろなどへ動かせます）</li>
+  <li>カードの地色（いまはアプリと同じ暗色。既存の配色から選ぶこともできます）</li>
+  <li>カードの図像（無しにもできます）</li>
+  <li>デッキの皿を足すのをやめる（<code>TEN PLATES</code> の表記を変えたくない場合）</li>
+  <li>PICKUPのカードをやめる（デッキと作品一覧には残ります）</li>
+
+</ul>
+
+</div>
+</body>
+</html>

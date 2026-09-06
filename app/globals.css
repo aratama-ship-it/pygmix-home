@@ -629,16 +629,19 @@ a.collage-card:focus-visible {
 }
 
 .orbit-hero {
-  --route-x: clamp(340px, 34vw, 480px);
-  --route-x-soft: clamp(275px, 27.5vw, 390px);
-  --route-x-inner: clamp(150px, 15vw, 215px);
-  --route-y: clamp(235px, 28vh, 275px);
-  --route-y-soft: clamp(155px, 19vh, 185px);
+  /* ★2026-09-06 見直し: 識別の帯（円・コンベア・門）を単独で100vhにせず、
+     約62vhへ詰めてPICKUPを専用セクション（.pickup）へ出す。
+     route-y・route-x とも新しい高さに合わせて実測で縮めた（design/TOKEN_SHEET.md）。 */
+  --route-x: clamp(280px, 30vw, 400px);
+  --route-x-soft: clamp(230px, 23vw, 325px);
+  --route-x-inner: clamp(125px, 12.5vw, 180px);
+  --route-y: clamp(120px, 15vh, 150px);
+  --route-y-soft: clamp(80px, 10vh, 100px);
   --route-out: calc(50vw + 160px);
   --card-width: clamp(186px, 16.5vw, 224px);
   --card-height: clamp(126px, 10.9vw, 148px);
   position: relative;
-  min-height: max(780px, 100svh);
+  min-height: max(560px, 62svh);
   overflow: hidden;
   border-bottom: 1px solid var(--line);
   background:
@@ -1030,86 +1033,6 @@ a.collage-card:focus-visible {
   border-radius: 50%;
   content: "";
   pointer-events: none;
-}
-
-/* ---- 円のすぐ上に置く「いま見てほしいもの」 ----
-   ★このヒーローは回転寿司の比喩でできている。作品は「皿」（色の付いた楕円の縁）に載り、
-     コンベアのレールを52秒で1周する。PICKUPは「流れている中から一枚だけ引き上げて
-     手前に置いた皿」として組む。値の根拠は design/TOKEN_SHEET.md（そちらが正）。
-   ★四隅が同じ角丸・ピル型の札・大きめの影は使わない。この画面の語彙だけで作る。 */
-.center-pickup {
-  --pickup-ring: #d2ae58;  /* 皿の4色循環のうち金色。OGカードの明かりの溜まりと響く */
-  --pickup-room: calc(50vh - 50px - clamp(310px, 29vw, 390px) / 2 - 38px);
-
-  position: absolute;
-  top: calc(50% - 50px - clamp(310px, 29vw, 390px) / 2 - 14px);
-  left: 50%;
-  z-index: 14;
-  display: block;
-  width: min(420px, 70vw, calc(var(--pickup-room) * 1.905));
-  /* ★皿と同じ対角だけ極端な角丸。四隅同径の角丸にはしない */
-  border: 1px solid rgb(32 37 34 / 0.35);
-  border-radius: 52px 8px 52px 8px;
-  background: #191512;
-  box-shadow: 0 7px 16px rgb(32 37 34 / 0.1);
-  transform: translate(-50%, -100%);
-  transition: transform 180ms ease, border-color 180ms ease;
-}
-
-/* 皿。既存の皿（.orbit-item::before）と同じ描き方。
-   ★既存は上下左右+16pxだが、それだと縦の空きを16px食う。横は空いているので
-     「横に広く・縦に浅い」楕円にして、縦のコストを14pxに抑える。 */
-.center-pickup::before {
-  position: absolute;
-  top: -7px;
-  left: -20px;
-  z-index: -1;
-  width: calc(100% + 40px);
-  height: calc(100% + 14px);
-  border: 5px solid color-mix(in srgb, var(--pickup-ring) 82%, var(--paper));
-  border-radius: 50%;
-  background: var(--paper-light);
-  box-shadow:
-    0 0 0 1px rgb(32 37 34 / 0.22),
-    0 10px 20px rgb(32 37 34 / 0.14);
-  content: "";
-}
-
-.center-pickup:hover {
-  border-color: rgb(32 37 34 / 0.55);
-  transform: translate(-50%, calc(-100% - 2px));
-}
-
-.center-pickup-face {
-  display: block;
-  width: 100%;
-  height: auto;
-}
-
-/* 札。門（入口 IN / 出口 OUT）の「上は角・下は丸」を、横長の語に合わせて縮めたもの。
-   ★地は不透明にする。半透明だと背後が画像になり、コントラストが判定できない。 */
-.center-pickup-label {
-  position: absolute;
-  top: 0;
-  right: 20px;
-  padding: 5px 9px 6px;
-  border: 1px solid rgb(32 37 34 / 0.35);
-  border-top: 0;
-  border-radius: 0 0 11px 11px;
-  background: var(--paper-light);
-  color: var(--ink);
-  font-family: var(--mono);
-  font-size: 6px;
-  font-weight: 500;
-  letter-spacing: 0.18em;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .center-pickup,
-  .center-pickup:hover {
-    transition: none;
-    transform: translate(-50%, -100%);
-  }
 }
 
 .center-index {
@@ -1597,6 +1520,125 @@ a.collage-card:focus-visible {
   );
   clip-path: polygon(0 100%, 0 75%, 20% 75%, 20% 53%, 40% 53%, 40% 65%, 60% 65%, 60% 20%, 80% 20%, 80% 0, 100% 0, 100% 100%);
   content: "";
+}
+
+/* ---- PICKUP（本人指示 2026-09-06「舞台スケッチをこの倍くらいまで大きくしたい。
+   そろそろそもそものデザインの見直しも必要かもしれません」を受けた見直し） ----
+   ★参照調査（design/docs/2026-09-06_hero-redesign-brief）: 東京芸術劇場・Panicとも
+     トップ上段は「いま見てほしいもの」に使い、押しの1つは独立した帯を持っていた。
+     コンベアに埋め込むのをやめ、識別のヒーローとは別の、専用セクションにする。
+   ★流れる皿・中央の円との衝突を考える必要がなくなったので、通常の文書の流れで組む。
+     見出しは「LIVE PROJECTS / 01—10」と同じ、極小モノスペースの前置き＋見出しの型。
+   ★配色・書体・「対角だけ極端な角丸」は識別のヒーローと共通のまま（変えないこと）。 */
+.pickup {
+  padding: clamp(48px, 6vw, 84px) clamp(20px, 4.2vw, 68px) clamp(64px, 7vw, 96px);
+  background: var(--paper);
+}
+
+.pickup-heading {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 16px 22px;
+  max-width: 1180px;
+  margin: 0 auto clamp(26px, 3.2vw, 40px);
+}
+
+.pickup-heading > p {
+  margin: 0;
+  /* ★0.62だと var(--paper) の上で4.26:1（基準4.5:1）に届かない。design-lint C1 実測。
+     0.68で5.11:1。 */
+  color: rgb(32 37 34 / 0.68);
+  font-family: var(--mono);
+  font-size: 8px;
+  font-weight: 500;
+  letter-spacing: 0.18em;
+}
+
+.pickup-heading h2 {
+  margin: 0;
+  font-size: clamp(26px, 2.8vw, 40px);
+  font-weight: 600;
+  letter-spacing: -0.03em;
+  line-height: 1.1;
+}
+
+/* 画像＝OGカードの原寸640×336を上限に、左に写真・右に文言。狭い幅では縦に積む。 */
+.pickup-card {
+  display: grid;
+  grid-template-columns: minmax(0, 1.62fr) minmax(240px, 1fr);
+  align-items: stretch;
+  max-width: 1180px;
+  margin: 0 auto;
+  overflow: hidden;
+  border: 1px solid rgb(32 37 34 / 0.32);
+  /* ★皿のカード（.orbit-card）と同じ「対角だけ極端」の角丸言語。四隅同径にはしない。 */
+  border-radius: 10px 64px 10px 10px;
+  background: var(--paper-light);
+  color: inherit;
+  transition: transform 180ms ease, border-color 180ms ease;
+}
+
+.pickup-card:hover,
+.pickup-card:focus-visible {
+  border-color: rgb(32 37 34 / 0.55);
+  transform: translateY(-3px);
+}
+
+.pickup-face {
+  display: block;
+  width: 100%;
+  height: 100%;
+  min-height: 220px;
+  object-fit: cover;
+}
+
+.pickup-copy {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 12px;
+  padding: clamp(24px, 3vw, 40px);
+}
+
+.pickup-category {
+  /* ★<p>要素なのでブラウザ既定の margin を消す（.pickup-copy の gap だけで間隔を作る） */
+  margin: 0;
+  /* ★0.6だと var(--paper-light) の上で4.12:1（基準4.5:1）に届かない。design-lint C1 実測。
+     0.68で5.27:1。 */
+  color: rgb(32 37 34 / 0.68);
+  font-family: var(--mono);
+  font-size: 8px;
+  font-weight: 500;
+  letter-spacing: 0.13em;
+}
+
+.pickup-note {
+  margin: 0;
+  font-size: 13px;
+  line-height: 1.85;
+  letter-spacing: 0.02em;
+}
+
+.pickup-action {
+  margin-top: 4px;
+  padding-top: 10px;
+  border-top: 1px solid currentColor;
+  font-family: var(--mono);
+  font-size: 9px;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+}
+
+@media (max-width: 760px) {
+  .pickup-card {
+    grid-template-columns: 1fr;
+  }
+
+  .pickup-face {
+    min-height: 0;
+    aspect-ratio: 640 / 336;
+  }
 }
 
 .projects {
@@ -2868,15 +2910,15 @@ a.collage-card:focus-visible {
 
 @media (max-width: 900px) {
   .orbit-hero {
-    --route-x: clamp(255px, 34vw, 340px);
-    --route-x-soft: clamp(210px, 27vw, 275px);
-    --route-x-inner: clamp(115px, 14vw, 145px);
-    --route-y: clamp(230px, 30vh, 255px);
-    --route-y-soft: clamp(150px, 20vh, 172px);
-    --route-out: calc(50vw + 130px);
+    --route-x: clamp(210px, 28vw, 285px);
+    --route-x-soft: clamp(175px, 22vw, 230px);
+    --route-x-inner: clamp(95px, 12vw, 120px);
+    --route-y: clamp(120px, 16vh, 140px);
+    --route-y-soft: clamp(80px, 11vh, 95px);
+    --route-out: calc(50vw + 110px);
     --card-width: clamp(172px, 23vw, 200px);
     --card-height: clamp(118px, 15.5vw, 136px);
-    min-height: 780px;
+    min-height: 500px;
   }
 
   .orbit-card img {
@@ -2936,12 +2978,12 @@ a.collage-card:focus-visible {
     --route-x: calc(50vw - 48px);
     --route-x-soft: calc(50vw - 66px);
     --route-x-inner: 22vw;
-    --route-y: 255px;
-    --route-y-soft: 168px;
+    --route-y: 135px;
+    --route-y-soft: 88px;
     --route-out: calc(50vw + 95px);
     --card-width: 124px;
     --card-height: 90px;
-    min-height: 820px;
+    min-height: 480px;
   }
 
   .orbit-grid {
@@ -4018,82 +4060,5 @@ a.collage-card:focus-visible {
 
   .melody-product-footer > a:last-child {
     justify-self: start;
-  }
-}
-
-/* ---- 円の上のカードの、狭い幅での扱い ----
-   ★幅ごとに「使える下端」を1周52秒・全皿で実測して決めた。数値は design/TOKEN_SHEET.md 参照。 */
-@media (max-width: 1100px) {
-  .center-pickup {
-    top: clamp(24px, 3.2vw, 48px);
-    width: min(350px, 72vw);
-    transform: translateX(-50%);
-  }
-
-  .center-pickup:hover {
-    transform: translate(-50%, -2px);
-  }
-}
-
-@media (max-width: 1000px) {
-  .center-pickup {
-    top: clamp(20px, 2.4vw, 40px);
-    width: min(276px, 62vw);
-  }
-}
-
-/* ★縦が短い画面への備え（2026-09-06 実測で発見）。
-   円は calc(50% - 50px) にあるので、画面が縦に短いと円が上がり、
-   その上の空きが無くなる。幅の計算式（空き×1.905）はそのまま小さくなり続けるため、
-   1440×640でカード70px、1440×540では2pxまで潰れていた。 */
-
-/* 幅広×短い: 面の画像が読める大きさ（約156px）を割るので出さない。
-   1440×740で166px、730pxで156px、700pxで128px（実測）。 */
-@media (min-width: 1101px) and (max-height: 719px) {
-  .center-pickup {
-    display: none;
-  }
-}
-
-/* 1100px以下×短い: 350px幅のままだと円に重なる（1024×600で円の上端185pxに対し
-   皿込み下端222px・実測）。狭い側と同じ276pxまで詰める。 */
-@media (max-width: 1100px) and (max-height: 700px) {
-  .center-pickup {
-    width: min(276px, 62vw);
-  }
-}
-
-@media (max-width: 560px) {
-  .center-pickup {
-    top: 22px;
-    /* ★42vwだと390pxで皿込みの下端112px＝コンベアの皿（y=110まで）に当たり、
-       320pxでは皿の左端81pxが隅ラベル（x18〜89）に当たる。38vwが上限。 */
-    width: min(168px, 38vw);
-  }
-
-  /* カードが168pxまで縮むので、皿の張り出しと札も一緒に小さくする */
-  .center-pickup::before {
-    top: -5px;
-    left: -8px;
-    width: calc(100% + 16px);
-    height: calc(100% + 10px);
-    border-width: 3px;
-  }
-
-  .center-pickup-label {
-    right: 12px;
-    padding: 4px 6px 5px;
-    border-radius: 0 0 8px 8px;
-    font-size: 5px;
-    letter-spacing: 0.14em;
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  @media (max-width: 1100px) {
-    .center-pickup,
-    .center-pickup:hover {
-      transform: translateX(-50%);
-    }
   }
 }
