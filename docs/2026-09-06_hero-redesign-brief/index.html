@@ -43,10 +43,10 @@ ul{ margin:6px 0 0; padding-left:1.2em; } li{ margin:3px 0; }
 <h1>pygmix.com ヒーロー見直し — 参照ブリーフと方向の提案</h1>
 <p class="meta">2026-09-06 作成／きっかけ: 「舞台スケッチをこの倍くらいまで大きくしたい。そろそろそもそものデザインの見直しも必要かもしれません」</p>
 
-<div class="ask">
-  <strong>判断してほしいこと</strong>
-  下の「提案する方向」で進めてよいか。良ければ実装に入ります。
-  別の方向がよければ、どこが引っかかるかを教えてください。
+<div class="ask" style="border-left-color:#4d5d3f">
+  <strong>★実装済み・公開待ち</strong>
+  本人承認（2026-09-06「OKです すすめてください」）を受けて実装済み。
+  下の結果は実際の画面（localhost:3000）から撮影したもの。公開はご本人のデプロイ操作待ち。
 </div>
 
 <h2>1. なぜ見直しが要るか（実測）</h2>
@@ -134,6 +134,30 @@ ul{ margin:6px 0 0; padding-left:1.2em; } li{ margin:3px 0; }
 <ul>
   <li><strong>ヒーローが全画面でなくなります。</strong>コンベアの見える面積が減り、没入感は下がります。これが受け入れられないなら、②を「1画面目の下」に置く（スクロールが要る）案に切り替えます。</li>
   <li>640×336 は<strong>いまのOGカード画像の原寸</strong>です。これ以上大きくすると画像が粗くなるので、拡大するなら元画像を作り直す必要があります。</li>
+</ul>
+
+<h2>実装結果（実機撮影・2026-09-06）</h2>
+<p>PC 1440×900 でスクロールせずに見える範囲（フォールド）。識別のヒーローが縮み、PICKUPの写真が実寸に近い大きさで見えている。</p>
+<figure><img src="shots/final-fold-1440.png" alt="実装後のフォールド（1440px）。ヒーローが縮み、下にPICKUPの写真の一部が見えている"></figure>
+
+<p>スマホ 390×844 のフォールド。PICKUPの見出し・写真・本文がスクロールなしでほぼ収まる。</p>
+<figure><img src="shots/final-fold-390.png" alt="実装後のフォールド（390px）。ヒーロー直後にPICKUPの全体が近い距離で見えている"></figure>
+
+<h3>実測</h3>
+<table>
+  <tr><th style="width:34%">確認したこと</th><th>結果</th></tr>
+  <tr><td>ヒーロー高さ</td><td>100vh → 約62vh（1440×900で560px）</td></tr>
+  <tr><td>コンベアのカードのはみ出し</td><td>1440/768/390pxで無し（余白71px・51px・60px）</td></tr>
+  <tr><td>PICKUPの大きさ</td><td>640×336の実寸画像をそのまま使用。768px・390pxではヒーロー直後の1画面に写真・本文・行き先が収まる</td></tr>
+  <tr><td>design-lint</td><td>NG113（皿11枚時と同数・新規指摘ゼロ）／WARN18（原因を実機確認・実害なし）</td></tr>
+  <tr><td>npm test</td><td>7件全通過（WORKSリンクを壊すテストが実際に落ちることも確認済み）</td></tr>
+</table>
+
+<h3>あわせて直した不具合</h3>
+<ul>
+  <li>WORKSの飛び先 <code>#activities</code> が存在しなかった → <code>#pickup</code> へ</li>
+  <li>自動回転に <code>aria-live</code> が無かった → 追加（W3C ARIA APG要件）</li>
+  <li>皿を11枚にした際 <code>aria-label</code> の人数表記が「10」のまま → 「11」に修正</li>
 </ul>
 
 </div>
