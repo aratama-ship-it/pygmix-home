@@ -1043,7 +1043,11 @@ a.collage-card:focus-visible {
   left: 50%;
   z-index: 14;
   display: block;
-  width: min(300px, 62vw);
+  /* ★大きさは「円の上にどれだけ空きがあるか」で決まる。空きは画面の高さでも変わるので、
+     計算で出す。空き = 円の上端（50vh - 50px - 直径/2）から、上の余白16pxと円との間隔18pxを引いた分。
+     画像は 640×336 なので、幅 = 空き × 1.905。上限380px。 */
+  --pickup-room: calc(50vh - 50px - clamp(310px, 29vw, 390px) / 2 - 34px);
+  width: min(380px, 66vw, calc(var(--pickup-room) * 1.905));
   overflow: hidden;
   border: 1px solid rgb(32 37 34 / 0.3);
   border-radius: 10px;
@@ -4002,7 +4006,7 @@ a.collage-card:focus-visible {
 @media (max-width: 1100px) {
   .center-pickup {
     top: clamp(22px, 3.2vw, 46px);
-    width: min(300px, 66vw);
+    width: min(340px, 70vw);
     transform: translateX(-50%);
   }
 
@@ -4015,8 +4019,8 @@ a.collage-card:focus-visible {
    （900pxで円の上端180px・実測）。幅を詰めて上へ寄せる。 */
 @media (max-width: 1000px) {
   .center-pickup {
-    top: clamp(18px, 2.6vw, 40px);
-    width: min(264px, 60vw);
+    top: clamp(16px, 2.4vw, 36px);
+    width: min(284px, 62vw);  /* ★300pxだと900pxで円（上端180px）に接触・実測 */
   }
 }
 
@@ -4025,8 +4029,10 @@ a.collage-card:focus-visible {
    中央に置くと x93 から始まるので隅ラベルにも当たらない。 */
 @media (max-width: 560px) {
   .center-pickup {
-    top: 20px;
-    width: min(160px, 42vw);
+    top: 18px;
+    /* ★184pxだと390pxで下端116px＝皿に当たる（y=110まで）。48vwだと320pxで
+       中央に置いたとき左端83pxとなり隅ラベル（x18〜89）に当たる。168px/42vwが上限。 */
+    width: min(168px, 42vw);
   }
 
   /* カードが160pxまで縮むので、札も一緒に小さくする（そのままだと面を覆う） */
