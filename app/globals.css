@@ -961,18 +961,18 @@ a.collage-card:focus-visible {
 }
 
 .orbit-plate-icon img {
-  width: 30%;
-  height: auto;
+  /* ★縦横を同じ長さで直接指定する。aspect-ratio と height:auto の組み合わせは
+     ブラウザによって解釈が分かれ、縦長になるとの報告があった（2026-09-07）。
+     Chromium の実測では正方形だったが、比率に頼らず長さを2つ書けばどの環境でも崩れない。
+     0.19 は元の width:30%（内容領域143pxに対し43px）と同じ大きさ。
+     ★% は使わないこと。%パディングは幅基準で解決されるため内容領域の高さが53.9pxしかなく、
+       height を % で書くと潰れる（max-height:46% を入れて24.8pxになった・実測）。 */
+  width: calc(var(--card-width) * 0.19);
+  height: calc(var(--card-width) * 0.19);
   flex: none;
-  /* ★保険。flexの伸長が効くと絵が縦長になる（2026-09-07に縦長の報告あり。
-     こちらの実測では5画面×5枚すべて正方形で、原因はブラウザ側の古い描画だったが、
-     align-self を明示しておけば flex-direction がどちらでも伸びない）。
-     ★max-height は付けないこと。%パディングは幅基準で解決されるため内容領域の高さが
-       53.9pxしかなく、max-height:46% が24.8pxとなって絵を潰した（実測）。 */
   align-self: center;
   border: 1px solid rgb(32 37 34 / 0.16);
   border-radius: 23%;
-  aspect-ratio: 1;
   object-fit: cover;
 }
 
