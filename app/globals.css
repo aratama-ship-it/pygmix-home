@@ -1632,6 +1632,63 @@ a.collage-card:focus-visible {
   letter-spacing: 0.08em;
 }
 
+/* 舞台スケッチ。地色はリンク先のアプリと同じ舞台の暗色にして、開く前と後をつなぐ
+   （.project-audio が独自色を使っているのと同じ考え方）。
+   ★span 4（全幅）。この一覧は span を足すと 16 カラム＝4行ちょうどで埋まる設計で、
+     span 2 を足すと audio が1枚だけ取り残された行ができる（2026-09-06 実測）。
+     全幅は .project-melody と同じ型。足すなら 4 の倍数を保つこと。 */
+.project-stagesketch {
+  grid-column: span 4;
+  min-height: 360px;
+  border-radius: 7px 7px 98px 7px;
+  color: var(--paper-light);
+  background: #191512;
+}
+
+/* 正面図（上）と平面図（下）が同時に動く、というアプリの画面そのものを図像にする */
+.project-stagesketch::before,
+.project-stagesketch::after {
+  position: absolute;
+  right: 6%;
+  width: 30%;
+  border: 1px solid rgb(250 248 242 / 0.45);
+  content: "";
+}
+
+/* 上＝客席から見た正面図。足元に明かりの溜まりを置く */
+.project-stagesketch::before {
+  top: 19%;
+  height: 27%;
+  background: radial-gradient(
+    ellipse 42% 62% at 50% 100%,
+    rgb(216 180 95 / 0.5),
+    transparent 70%
+  );
+}
+
+/* 下＝真上から見た平面図。舞台の中心線を1本入れる */
+.project-stagesketch::after {
+  top: 53%;
+  height: 27%;
+  background: linear-gradient(
+    90deg,
+    transparent calc(50% - 1px),
+    rgb(250 248 242 / 0.35) calc(50% - 1px) calc(50% + 1px),
+    transparent calc(50% + 1px)
+  );
+}
+
+.project-stagesketch > a {
+  position: relative;
+  z-index: 1;
+}
+
+/* 図像は右3割強にいる。本文がその下へ潜らないように幅を止める（.project-melody と同じ作法） */
+.project-stagesketch .project-card-copy,
+.project-stagesketch .project-action {
+  max-width: 56%;
+}
+
 .project-juggleline {
   grid-column: span 2;
   min-height: 380px;
@@ -3639,6 +3696,10 @@ a.collage-card:focus-visible {
 }
 
 @media (max-width: 1100px) {
+  .project-stagesketch {
+    grid-column: span 2;
+  }
+
   .project-melody {
     grid-column: span 2;
   }
@@ -3718,6 +3779,18 @@ a.collage-card:focus-visible {
 }
 
 @media (max-width: 560px) {
+  /* 狭いカードでは図像が本文と「体験版を使ってみる」の行に重なる（390pxで実測）。
+     こちらの図像は装飾なので、重ねて読みにくくするより消す。 */
+  .project-stagesketch::before,
+  .project-stagesketch::after {
+    display: none;
+  }
+
+  .project-stagesketch .project-card-copy,
+  .project-stagesketch .project-action {
+    max-width: 100%;
+  }
+
   .project-melody {
     min-height: 355px;
   }

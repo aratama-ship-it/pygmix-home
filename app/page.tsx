@@ -15,6 +15,16 @@ type ProjectLink = {
 
 const projectLinks: readonly ProjectLink[] = [
   {
+    className: "project-stagesketch",
+    index: "P-05",
+    category: "STAGE / IMAGE STUDY",
+    title: "舞台スケッチ",
+    note: "舞台の立ち位置と動線を、客席からの正面図と真上の平面図で同時に描く。体験版は登録不要。",
+    href: "https://stagesketch-try.juggler-arata.workers.dev/",
+    action: "体験版を使ってみる ↗",
+    external: true,
+  },
+  {
     className: "project-juggleline",
     index: "P-01",
     category: "JUGGLING ANALYSIS / BETA",
@@ -114,7 +124,7 @@ export default function Home() {
 
       <section className="projects" id="projects" aria-labelledby="projects-title">
         <div className="projects-heading">
-          <p>LIVE PROJECTS / 01—09</p>
+          <p>LIVE PROJECTS / 01—10</p>
           <h2 id="projects-title">ライブラリ</h2>
           <p>
             身体と音を解析するツール、条件や根拠を比べる「ものさし」シリーズ、記録と生活の道具。

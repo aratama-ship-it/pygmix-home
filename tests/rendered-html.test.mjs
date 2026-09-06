@@ -36,6 +36,12 @@ test("server-renders the PYGMIX home draft", async () => {
   assert.match(html, />出口</);
   assert.equal([...html.matchAll(/class="orbit-item /g)].length, 10);
   assert.doesNotMatch(html, /ACTIVITY INDEX|ひとつじゃない。|でも、ばらばらでもない。/);
+  /* 2026-09-06: 舞台スケッチを作品一覧へ追加。★ここへ足したら見出しの件数
+     「LIVE PROJECTS / 01—NN」も直すこと（表示件数と食い違うため）。 */
+  assert.match(html, /舞台スケッチ/);
+  assert.match(html, /stagesketch-try\.juggler-arata\.workers\.dev/);
+  assert.match(html, /LIVE PROJECTS \/ 01—10/);
+  assert.equal([...html.matchAll(/class="project-card /g)].length, 10, "作品カードは10枚");
   assert.match(html, /JuggleLine/);
   assert.match(html, /System Audio Analyzer/);
   assert.match(html, /href="\/system-audio-analyzer"/);
